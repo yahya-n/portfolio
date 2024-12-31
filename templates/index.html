@@ -4,17 +4,24 @@
 
 {% block content %}
 <!-- Hero Section -->
-<section id="home" class="vh-100 d-flex align-items-center bg-dark text-light">
-    <div class="container text-center" data-aos="fade-up">
-        <img src="{{ profile.profile_photo.url }}" alt="Profile" class="rounded-circle mb-3" style="width: 150px; height: 150px;">
-        <h1 class="display-4 fw-bold">{{ profile.name }}</h1>
-        <p class="lead text-secondary">I'm a <span class="text-info">{{ profile.occupation }}</span></p>
+<section id="home" class="vh-100 d-flex align-items-center bg-gradient text-white">
+    <div class="container text-center">
+        <div class="profile-frame mx-auto mb-4" data-aos="zoom-in">
+            <img src="{{ profile.profile_photo.url }}" alt="Profile" class="rounded-circle" style="width: 200px; height: 200px; border: 5px solid white;">
+        </div>
+        <h1 class="display-3 fw-bold" data-aos="fade-down">{{ profile.name }}</h1>
+        <p class="lead text-secondary" data-aos="fade-up">A passionate <span class="text-warning">{{ profile.occupation }}</span></p>
         <div class="mt-4">
-            <a href="{{ profile.cv.url }}" class="btn btn-primary btn-lg me-3"><i class="fas fa-download"></i> Download CV</a>
-            <a href="#contact" class="btn btn-outline-light btn-lg"><i class="fas fa-envelope"></i> Contact Me</a>
+            <a href="{{ profile.cv.url }}" class="btn btn-light btn-lg me-3" data-aos="fade-right">
+                <i class="fas fa-download"></i> Download CV
+            </a>
+            <a href="#contact" class="btn btn-outline-light btn-lg" data-aos="fade-left">
+                <i class="fas fa-envelope"></i> Contact Me
+            </a>
         </div>
     </div>
 </section>
+
 
 
 
@@ -27,15 +34,22 @@
             </div>
             <div class="col-md-7" data-aos="fade-left">
                 <h2 class="fw-bold mb-3">About Me</h2>
-                <p>{{ profile.about_me }}</p>
-                <ul class="list-unstyled">
-                    <li><strong>Email:</strong> <a href="mailto:{{ profile.email }}" class="text-dark">{{ profile.email }}</a></li>
-                    <li><strong>LinkedIn:</strong> <a href="{{ profile.linkedin_link }}" class="text-dark">{{ profile.linkedin_link }}</a></li>
-                </ul>
+                <p class="text-muted">{{ profile.about_me }}</p>
+                <div class="timeline">
+                    <div class="timeline-item" data-aos="fade-up">
+                        <h5>Milestone 1</h5>
+                        <p>Description of achievement.</p>
+                    </div>
+                    <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
+                        <h5>Milestone 2</h5>
+                        <p>Description of achievement.</p>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
 </section>
+
 
 
 
@@ -43,16 +57,68 @@
 <section id="skills" class="py-5 bg-light">
     <div class="container">
         <h2 class="text-center fw-bold mb-5" data-aos="fade-up">My Skills</h2>
+
+        <!-- Frontend Skills -->
+        <h3 class="text-center mb-4">Frontend Skills</h3>
         <div class="row text-center">
             {% for skill in frontend_skills %}
             <div class="col-md-3 mb-4" data-aos="zoom-in">
                 <div class="icon-container">
                     <i class="{{ skill.icon }} fa-3x mb-3"></i>
                     <h5>{{ skill.name }}</h5>
+                    <!-- Single Star with Fill -->
+                    <div class="star-container">
+                        <i class="fas fa-star star-base"></i>
+                        <div class="star-fill" style="width: {{ skill.level }}%;"></div>
+                    </div>
                 </div>
             </div>
             {% endfor %}
+        </div>
+
+        <!-- Backend Skills -->
+        <h3 class="text-center mb-4">Backend Skills</h3>
+        <div class="row text-center">
             {% for skill in backend_skills %}
+            <div class="col-md-3 mb-4" data-aos="zoom-in">
+                <div class="icon-container">
+                    <i class="{{ skill.icon }} fa-3x mb-3"></i>
+                    <h5>{{ skill.name }}</h5>
+                    <!-- Single Star with Fill -->
+                    <div class="star-container">
+                        <i class="fas fa-star star-base"></i>
+                        <div class="star-fill" style="width: {{ skill.level }}%;"></div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+
+        <!-- Other Skills -->
+        <h3 class="text-center mb-4">Other Skills</h3>
+        <div class="row text-center">
+            {% for skill in other_skills %}
+            <div class="col-md-3 mb-4" data-aos="zoom-in">
+                <div class="icon-container">
+                    <i class="{{ skill.icon }} fa-3x mb-3"></i>
+                    <h5>{{ skill.name }}</h5>
+                    <!-- Single Star with Fill -->
+                    <div class="star-container">
+                        <i class="fas fa-star star-base"></i>
+                        <div class="star-fill" style="width: {{ skill.level }}%;"></div>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!--<section id="skills" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center fw-bold mb-5" data-aos="fade-up">My Skills</h2>
+        <div class="row text-center">
+            {% for skill in skills %}
             <div class="col-md-3 mb-4" data-aos="zoom-in">
                 <div class="icon-container">
                     <i class="{{ skill.icon }} fa-3x mb-3"></i>
@@ -62,8 +128,24 @@
             {% endfor %}
         </div>
     </div>
-</section>
-
+</section>-->
+<!--<section id="skills" class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center fw-bold mb-5" data-aos="fade-up">My Skills</h2>
+        <div class="row text-center">
+            {% for skill in skills %}
+            {% if skill.type == "Frontend" %}
+            <div class="col-md-3 mb-4" data-aos="zoom-in">
+                <div class="icon-container">
+                    <i class="{{ skill.icon }} fa-3x mb-3"></i>
+                    <h5>{{ skill.name }}</h5>
+                </div>
+            </div>
+            {% endif %}
+            {% endfor %}
+        </div>
+    </div>
+</section>-->
 
 <!-- Projects Section -->
 <section id="projects" class="py-5">
@@ -92,15 +174,27 @@
 
 
 
+
+
 <!-- Contact Section -->
-<section id="contact" class="py-5 bg-dark text-light">
+<section id="contact" class="py-5 bg-gradient text-light">
     <div class="container text-center">
         <h2 class="fw-bold mb-4" data-aos="fade-up">Contact Me</h2>
-        <p>Email me at <a href="mailto:{{ profile.email }}" class="text-info">{{ profile.email }}</a></p>
-        <div class="social-icons mt-4">
-            <a href="{{ profile.linkedin_link }}" class="btn btn-outline-light me-2"><i class="fab fa-linkedin"></i></a>
-            <a href="{{ profile.github_link }}" class="btn btn-outline-light"><i class="fab fa-github"></i></a>
-        </div>
+        <p>Email me at <a href="mailto:{{ profile.email }}" class="text-warning">{{ profile.email }}</a></p>
+        <form id="contactForm" method="GET" action="">
+            <div class="mb-3" data-aos="fade-up">
+                <input type="text" id="name" class="form-control" placeholder="Your Name" required>
+            </div>
+            <div class="mb-3" data-aos="fade-up" data-aos-delay="100">
+                <input type="email" id="email" class="form-control" placeholder="Your Email" required>
+            </div>
+            <div class="mb-3" data-aos="fade-up" data-aos-delay="200">
+                <textarea id="message" class="form-control" rows="5" placeholder="Your Message"></textarea>
+            </div>
+            <button type="submit" class="btn btn-warning btn-lg mt-3" data-aos="fade-up" data-aos-delay="300">
+                <i class="fas fa-paper-plane"></i> Send Message
+            </button>
+        </form>
     </div>
 </section>
 

@@ -1,0 +1,70 @@
+:root {
+    --primary-color: #BDBCB8;
+    --secondary-color: #ffffff;
+    --accent-color: #646c79;
+    --heading-color: #000000;
+    --footer-color: #000000;
+  }
+  
+  body {
+    background-color: var(--primary-color);
+    color: var(--accent-color);
+    font-family: Arial, sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 { 
+    color: var(--heading-color); /* Apply black color to all headings */ 
+}
+  
+  header {
+    background-color: var(--header-color);
+    padding: 20px;
+    text-align: center;
+  }
+  
+  nav {
+    background-color: var(--accent-color);
+    padding: 10px;
+  }
+  
+  nav a {
+    color: var(--primary-color);
+    text-decoration: none;
+    padding: 10px;
+  }
+  
+  main {
+    padding: 20px;
+  }
+  
+  footer {
+    background-color: var(--footer-color);
+    padding: 10px;
+    text-align: center;
+  }
+  .star-container {
+    position: relative;
+    display: inline-block;
+    width: 100px; /* Adjust the width as needed */
+    height: 20px; /* Adjust the height as needed */
+    background-color: #ccc; /* Base color for the star */
+  }
+  
+  .star-base {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #ccc; /* Base color for the star */
+  }
+  
+  .star-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: #FFD700; /* Yellow color for the filled part */
+    overflow: hidden;
+  }
+  
+  

@@ -1,6 +1,16 @@
 from django.contrib import admin
 from .models import Profile, Experience, Education, Skill
 
+
+from django.contrib import admin
+from .models import Project
+
+@admin.register(Project)
+class ProjectAdmin(admin.ModelAdmin):
+    list_display = ('title', 'created_at')
+    search_fields = ('title',)
+    ordering = ('-created_at',)
+
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
     list_display = ('name', 'occupation')

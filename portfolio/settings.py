@@ -37,7 +37,6 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',  # For formatting numbers and dates
     'about',
-    'projects',
 ]
 
 MIDDLEWARE = [

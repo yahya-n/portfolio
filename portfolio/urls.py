@@ -22,7 +22,8 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', include('about.urls')),  # Routes the root URL to the `about` app
-    path('/projects/', include('projects.urls')),  # Routes `/projects` to the `projects` app
+    path('about/', include('about.urls')), 
+    #path('/projects/', include('projects.urls')),  # Routes `/projects` to the `projects` app
 ]
 
 if settings.DEBUG:

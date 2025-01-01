@@ -39,6 +39,7 @@ def about_view(request):
 from django.core.mail import send_mail
 from django.http import JsonResponse
 from django.shortcuts import render
+from .models import Profile
 
 def send_contact_email(request):
     if request.method == 'POST':
@@ -46,19 +47,22 @@ def send_contact_email(request):
         email = request.POST.get('email')
         message = request.POST.get('message')
 
+        # Retrieve the recipient email from the Profile model
+        profile = Profile.objects.first()  # Assumes only one profile exists
+        recipient_email = profile.recipient_email if profile else 'default@example.com'
+
         # Construct the email
         subject = f"Message from {name} via Portfolio Contact Form"
         body = f"Name: {name}\nEmail: {email}\n\nMessage:\n{message}"
-        recipient_list = ['abdulkuddoosyahya@gmail.com']  # Replace with your personal email
+        from_email = 'poartalzz@gmail.com'  # Use EMAIL_HOST_USER to avoid Gmail rejection
 
         try:
-            send_mail(subject, body, email, recipient_list)
+            send_mail(subject, body, from_email, [recipient_email])
             return JsonResponse({'success': True, 'message': 'Message sent successfully!'})
         except Exception as e:
-            return JsonResponse({'success': False, 'message': str(e)})
+            return JsonResponse({'success': False, 'message': f"Error: {str(e)}"})
 
     return JsonResponse({'success': False, 'message': 'Invalid request'})
-
 
 def about_view(request):
     profile = Profile.objects.first()

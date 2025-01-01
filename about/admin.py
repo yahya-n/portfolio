@@ -13,8 +13,8 @@ class ProjectAdmin(admin.ModelAdmin):
 
 @admin.register(Profile)
 class ProfileAdmin(admin.ModelAdmin):
-    list_display = ('name', 'occupation', 'email', 'github_link', 'linkedin_link')
-    list_editable = ('github_link', 'linkedin_link')  # Allow inline editing
+    list_display = ('name', 'occupation', 'email', 'github_link', 'linkedin_link', 'recipient_email')
+    list_editable = ('github_link', 'linkedin_link','recipient_email',)  # Allow inline editing
 
 @admin.register(Experience)
 class ExperienceAdmin(admin.ModelAdmin):

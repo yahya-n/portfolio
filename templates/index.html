@@ -3,7 +3,6 @@
 {% block title %}Home - Portfolio{% endblock %}
 
 {% block content %}
-<!-- Hero Section -->
 <section id="home" class="vh-100 d-flex align-items-center bg-gradient text-white">
     <div class="container text-center">
         <div class="profile-frame mx-auto mb-4" data-aos="zoom-in">
@@ -11,12 +10,24 @@
         </div>
         <h1 class="display-3 fw-bold" data-aos="fade-down">{{ profile.name }}</h1>
         <p class="lead text-secondary" data-aos="fade-up">A passionate <span class="text-warning">{{ profile.occupation }}</span></p>
+        
+        <!-- Buttons for CV and Contact -->
         <div class="mt-4">
             <a href="{{ profile.cv.url }}" class="btn btn-light btn-lg me-3" data-aos="fade-right">
                 <i class="fas fa-download"></i> Download CV
             </a>
             <a href="#contact" class="btn btn-outline-light btn-lg" data-aos="fade-left">
                 <i class="fas fa-envelope"></i> Contact Me
+            </a>
+        </div>
+
+        <!-- Round Social Media Buttons -->
+        <div class="mt-3 d-flex justify-content-center gap-3">
+            <a href="{{ profile.github_link }}" class="btn btn-social btn-dark d-flex align-items-center justify-content-center" target="_blank" data-aos="fade-up">
+                <i class="fab fa-github"></i>
+            </a>
+            <a href="{{ profile.linkedin_link }}" class="btn btn-social btn-primary d-flex align-items-center justify-content-center" target="_blank" data-aos="fade-up" data-aos-delay="100">
+                <i class="fab fa-linkedin"></i>
             </a>
         </div>
     </div>
@@ -29,26 +40,35 @@
 <section id="about" class="py-5">
     <div class="container">
         <div class="row align-items-center">
+            <!-- Profile Image -->
             <div class="col-md-5" data-aos="fade-right">
                 <img src="{{ profile.profile_photo.url }}" alt="About Me" class="img-fluid rounded-circle shadow">
             </div>
+
+            <!-- About Me and Timeline -->
             <div class="col-md-7" data-aos="fade-left">
                 <h2 class="fw-bold mb-3">About Me</h2>
                 <p class="text-muted">{{ profile.about_me }}</p>
-                <div class="timeline">
-                    <div class="timeline-item" data-aos="fade-up">
-                        <h5>Milestone 1</h5>
-                        <p>Description of achievement.</p>
+
+                <!-- Education Timeline -->
+                <div class="timeline mt-4">
+                    <h3 class="fw-bold mb-3">Education</h3>
+                    {% for edu in education %}
+                    <div class="timeline-item d-flex mb-4" data-aos="fade-up">
+                        <div class="timeline-marker bg-warning"></div>
+                        <div class="timeline-content ms-3 p-3 rounded shadow-sm">
+                            <h5 class="fw-bold text-dark">{{ edu.degree }}</h5>
+                            <p class="mb-1 text-muted">{{ edu.institution }}</p>
+                            <p class="mb-0 text-secondary"><i class="fas fa-calendar-alt"></i> {{ edu.year }}</p>
+                        </div>
                     </div>
-                    <div class="timeline-item" data-aos="fade-up" data-aos-delay="100">
-                        <h5>Milestone 2</h5>
-                        <p>Description of achievement.</p>
-                    </div>
+                    {% endfor %}
                 </div>
             </div>
         </div>
     </div>
 </section>
+
 
 
 
@@ -181,22 +201,67 @@
     <div class="container text-center">
         <h2 class="fw-bold mb-4" data-aos="fade-up">Contact Me</h2>
         <p>Email me at <a href="mailto:{{ profile.email }}" class="text-warning">{{ profile.email }}</a></p>
-        <form id="contactForm" method="GET" action="">
+        <form id="contactForm" method="POST">
+            {% csrf_token %}
             <div class="mb-3" data-aos="fade-up">
-                <input type="text" id="name" class="form-control" placeholder="Your Name" required>
+                <input type="text" id="name" name="name" class="form-control" placeholder="Your Name" required>
             </div>
             <div class="mb-3" data-aos="fade-up" data-aos-delay="100">
-                <input type="email" id="email" class="form-control" placeholder="Your Email" required>
+                <input type="email" id="email" name="email" class="form-control" placeholder="Your Email" required>
             </div>
             <div class="mb-3" data-aos="fade-up" data-aos-delay="200">
-                <textarea id="message" class="form-control" rows="5" placeholder="Your Message"></textarea>
+                <textarea id="message" name="message" class="form-control" rows="5" placeholder="Your Message"></textarea>
             </div>
-            <button type="submit" class="btn btn-warning btn-lg mt-3" data-aos="fade-up" data-aos-delay="300">
+            <button type="button" id="sendMessageButton" class="btn btn-warning btn-lg mt-3" data-aos="fade-up" data-aos-delay="300">
                 <i class="fas fa-paper-plane"></i> Send Message
             </button>
         </form>
+        <p id="statusMessage" class="mt-3"></p>
+        
+        <p id="statusMessage" class="mt-3"></p>
     </div>
 </section>
+<script>
+    document.getElementById('sendMessageButton').addEventListener('click', function() {
+        const name = document.getElementById('name').value;
+        const email = document.getElementById('email').value;
+        const message = document.getElementById('message').value;
+        const csrfToken = document.querySelector('[name=csrfmiddlewaretoken]').value;
+
+        // Create a form-encoded body
+        const body = new URLSearchParams();
+        body.append('name', name);
+        body.append('email', email);
+        body.append('message', message);
+
+        fetch('/send-email/', {
+            method: 'POST',
+            headers: {
+                'X-CSRFToken': csrfToken,
+                'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: body.toString(),
+        })
+        .then(response => response.json())
+        .then(data => {
+            const statusMessage = document.getElementById('statusMessage');
+            if (data.success) {
+                statusMessage.textContent = data.message;
+                statusMessage.style.color = 'green';
+                document.getElementById('contactForm').reset();
+            } else {
+                statusMessage.textContent = data.message;
+                statusMessage.style.color = 'red';
+            }
+        })
+        .catch(error => {
+            const statusMessage = document.getElementById('statusMessage');
+            statusMessage.textContent = 'An error occurred. Please try again later.';
+            statusMessage.style.color = 'red';
+        });
+    });
+</script>
+
 
 
 {% endblock %}

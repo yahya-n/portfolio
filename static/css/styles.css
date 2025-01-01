@@ -67,4 +67,65 @@
     overflow: hidden;
   }
   
-  
+  .timeline {
+    position: relative;
+    margin-top: 20px;
+    padding-left: 30px;
+    border-left: 3px solid #ffc107; /* Golden timeline line */
+}
+
+.timeline-item {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -15px;
+    width: 20px;
+    height: 20px;
+    background-color: #ffc107;
+    border-radius: 50%;
+    border: 3px solid #fff;
+}
+
+.timeline-content {
+    background-color: #f8f9fa;
+    border-left: 5px solid #ffc107;
+    padding: 15px;
+    border-radius: 8px;
+}
+.btn-social {
+    width: 50px; /* Diameter of the button */
+    height: 50px;
+    border-radius: 50%; /* Makes the button round */
+    display: inline-flex;
+    font-size: 1.5rem;
+    padding: 0;
+    text-align: center;
+}
+
+.btn-social i {
+    margin: 0; /* Center the logo perfectly */
+}
+
+.btn-dark {
+    background-color: #333;
+    color: #fff;
+}
+
+.btn-dark:hover {
+    background-color: #555;
+    color: #fff;
+}
+
+.btn-primary {
+    background-color: #0077b5;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #005582;
+    color: #fff;
+}

@@ -7,7 +7,8 @@ class Profile(models.Model):
     about_me = models.TextField()
     profile_photo = models.ImageField(upload_to='uploads/')
     cv = models.FileField(upload_to='uploads/')
-
+    github_link = models.URLField(max_length=200, blank=True, null=True)  # GitHub Profile Link
+    linkedin_link = models.URLField(max_length=200, blank=True, null=True)  # LinkedIn Profile Link
 
     def __str__(self):
         return self.name

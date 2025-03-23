@@ -25,6 +25,7 @@ urlpatterns = [
     path('about/', include('about.urls')),
     #path('', include('admin_soft.urls')), 
     #path('/projects/', include('projects.urls')),  # Routes `/projects` to the `projects` app
+    
 ]
 
 if settings.DEBUG:

@@ -1,18 +1,25 @@
 from django.db import models
-'''
-class Profile(models.Model):
-    name = models.CharField(max_length=100)
-    occupation = models.CharField(max_length=100)
-    email = models.EmailField(default='example@example.com')  # Ensure this field exists
-    about_me = models.TextField()
-    profile_photo = models.ImageField(upload_to='uploads/')
-    cv = models.FileField(upload_to='uploads/')
-    github_link = models.URLField(max_length=200, blank=True, null=True)  # GitHub Profile Link
-    linkedin_link = models.URLField(max_length=200, blank=True, null=True)  # LinkedIn Profile Link
+from django.utils.timezone import now
+
+from django.db import models
+from django.utils.timezone import now
+
+class Metrics(models.Model):
+    EVENT_TYPES = [
+        ('linkedin', 'LinkedIn Click'),
+        ('github', 'GitHub Click'),
+        ('cv', 'CV Download'),
+        ('message', 'Message Sent'),
+    ]
+    
+    event_type = models.CharField(max_length=50, choices=EVENT_TYPES)
+    count = models.PositiveIntegerField(default=1)
+    timestamp = models.DateTimeField(default=now)
 
     def __str__(self):
-        return self.name
-'''
+        return f"{self.get_event_type_display()} - {self.timestamp.strftime('%Y-%m-%d %H:%M')}"
+
+
 class Profile(models.Model):
     name = models.CharField(max_length=100)
     occupation = models.CharField(max_length=100)

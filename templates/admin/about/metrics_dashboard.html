@@ -1,0 +1,53 @@
+{% extends "admin/base_site.html" %}
+{% load static %}
+{% block content %}
+<h1 class="text-center mb-4">Metrics Dashboard</h1>
+
+<!-- Date Filter Form -->
+<form method="get" class="d-flex align-items-center justify-content-center gap-3 mb-4">
+    <label for="start_date">Start Date:</label>
+    <input type="date" id="start_date" name="start_date" value="{{ start_date }}">
+    <label for="end_date">End Date:</label>
+    <input type="date" id="end_date" name="end_date" value="{{ end_date }}">
+    <button type="submit" class="btn btn-primary">Update Chart</button>
+</form>
+
+<!-- Chart Container -->
+<div class="chart-container">
+    <canvas id="metricsChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    // Prepare chart data
+    const chartData = "{{ data|safe }}";
+    const labels = Object.values(data)[0]?.labels || []; // Use labels from the first dataset
+
+    // Prepare datasets for all event types
+    const datasets = Object.keys(chartData).map((eventType, index) => ({
+        label: eventType.charAt(0).toUpperCase() + eventType.slice(1),
+        data: chartData[eventType].values,
+        borderColor: ['#007bff', '#28a745', '#dc3545', '#ffc107'][index % 4],
+        fill: false,
+    }));
+
+    // Initialize Chart.js
+    const ctx = document.getElementById('metricsChart').getContext('2d');
+    if (labels.length > 0) {
+        new Chart(ctx, {
+            type: 'line',
+            data: { labels, datasets },
+            options: {
+                responsive: true,
+                plugins: { legend: { display: true } },
+                scales: {
+                    x: { title: { display: true, text: 'Date' } },
+                    y: { title: { display: true, text: 'Interactions' }, beginAtZero: true },
+                },
+            },
+        });
+    } else {
+        ctx.fillText("No data available for the selected period.", 50, 50);
+    }
+</script>
+{% endblock %}

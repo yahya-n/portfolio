@@ -41,6 +41,56 @@ from django.http import JsonResponse
 from django.shortcuts import render
 from .models import Profile
 
+from django.http import JsonResponse
+from .models import Metrics
+from django.utils.timezone import now
+from django.db.models import Count
+from django.db.models.functions import TruncDay, TruncWeek, TruncMonth
+
+from django.http import HttpResponse
+from .models import Metrics
+import matplotlib.pyplot as plt
+from matplotlib.dates import DateFormatter
+from django.utils.timezone import now, timedelta
+from io import BytesIO
+
+def metrics_chart_view(request, event_type):
+    # Filter data for the past 7 days
+    end_date = now()
+    start_date = end_date - timedelta(days=7)
+    metrics = Metrics.objects.filter(event_type=event_type, timestamp__range=[start_date, end_date])
+
+    # Prepare data
+    timestamps = [metric.timestamp for metric in metrics]
+    counts = [metric.count for metric in metrics]
+
+    # Generate the chart
+    plt.figure(figsize=(10, 6))
+    plt.plot(timestamps, counts, marker='o', label=event_type.capitalize())
+
+    plt.title(f'{event_type.capitalize()} Analytics')
+    plt.xlabel('Date')
+    plt.ylabel('Count')
+    plt.legend()
+
+    # Format x-axis dates
+    plt.gca().xaxis.set_major_formatter(DateFormatter('%Y-%m-%d'))
+
+    # Save chart to a BytesIO buffer
+    buffer = BytesIO()
+    plt.savefig(buffer, format='png')
+    buffer.seek(0)
+    return HttpResponse(buffer, content_type='image/png')
+
+
+def track_event(request, event_type):
+    if request.method == "POST":
+        if event_type in dict(Metrics.EVENT_TYPES).keys():
+            # Track the interaction
+            Metrics.objects.create(event_type=event_type, count=1)
+            return JsonResponse({'success': True, 'message': f'{event_type} interaction recorded.'})
+    return JsonResponse({'success': False, 'message': 'Invalid event type or request method.'})
+
 def send_contact_email(request):
     if request.method == 'POST':
         name = request.POST.get('name')

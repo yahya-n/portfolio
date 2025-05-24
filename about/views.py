@@ -53,43 +53,50 @@ import matplotlib.pyplot as plt
 from matplotlib.dates import DateFormatter
 from django.utils.timezone import now, timedelta
 from io import BytesIO
+from django.contrib import admin
+from django.urls import path
+from django.utils.safestring import mark_safe
+from .models import Metrics
+from .models import Metrics
 
+
+
+class MetricsAdmin(admin.ModelAdmin):
+    list_display = ('event_type', 'timestamp', 'count', 'metrics_chart')
+    readonly_fields = ('metrics_chart',)
+
+    def metrics_chart(self, obj):
+        # Generate a URL to the chart view for this event_type
+        url = f"/admin/metrics_chart/{obj.event_type}/"
+        return mark_safe(f'<img src="{url}" width="600" />')
+    metrics_chart.short_description = "Event Chart"
+
+# Register the admin
+# admin.site.register(Metrics, MetricsAdmin)
+
+# Add a URL pattern for the chart view in your admin urls.py or main urls.py
 def metrics_chart_view(request, event_type):
-    # Filter data for the past 7 days
     end_date = now()
     start_date = end_date - timedelta(days=7)
-    metrics = Metrics.objects.filter(event_type=event_type, timestamp__range=[start_date, end_date])
+    metrics = Metrics.objects.filter(event_type=event_type, timestamp__range=[start_date, end_date]).order_by('timestamp')
 
-    # Prepare data
     timestamps = [metric.timestamp for metric in metrics]
     counts = [metric.count for metric in metrics]
 
-    # Generate the chart
-    plt.figure(figsize=(10, 6))
+    plt.figure(figsize=(8, 4))
     plt.plot(timestamps, counts, marker='o', label=event_type.capitalize())
-
-    plt.title(f'{event_type.capitalize()} Analytics')
+    plt.title(f'{event_type.capitalize()} Analytics (Last 7 Days)')
     plt.xlabel('Date')
     plt.ylabel('Count')
     plt.legend()
-
-    # Format x-axis dates
     plt.gca().xaxis.set_major_formatter(DateFormatter('%Y-%m-%d'))
+    plt.tight_layout()
 
-    # Save chart to a BytesIO buffer
     buffer = BytesIO()
     plt.savefig(buffer, format='png')
+    plt.close()
     buffer.seek(0)
     return HttpResponse(buffer, content_type='image/png')
-
-
-def track_event(request, event_type):
-    if request.method == "POST":
-        if event_type in dict(Metrics.EVENT_TYPES).keys():
-            # Track the interaction
-            Metrics.objects.create(event_type=event_type, count=1)
-            return JsonResponse({'success': True, 'message': f'{event_type} interaction recorded.'})
-    return JsonResponse({'success': False, 'message': 'Invalid event type or request method.'})
 
 def send_contact_email(request):
     if request.method == 'POST':
@@ -121,7 +128,11 @@ def about_view(request):
     skills = Skill.objects.all()  # Fetch all skills
     frontend_skills = skills.filter(type='Frontend')
     backend_skills = skills.filter(type='Backend')
-    other_skills = skills.filter(type='Other')
+    tools_skills = skills.filter(type='Tools')
+    soft_skills = skills.filter(type='Softskills')
+    about_quote = profile.about_quote if profile else None
+    location = profile.location if profile else None
+    typewriter = profile.typewriter if profile else None
     projects = Project.objects.all()
 
     return render(request, 'index.html', {
@@ -130,6 +141,12 @@ def about_view(request):
         'education': education,
         'frontend_skills': frontend_skills,
         'backend_skills': backend_skills,
-        'other_skills': other_skills,
+        'tools_skills': tools_skills,
+        'soft_skills': soft_skills,
+        'about_quote': about_quote,
+        'location': location,
+        'typewriter': typewriter,
         'projects': projects,
     })
+
+

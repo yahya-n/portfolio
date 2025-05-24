@@ -1,10 +1,11 @@
 :root {
-    --primary-color: #BDBCB8;
-    --secondary-color: #ffffff;
-    --accent-color: #646c79;
-    --heading-color: #000000;
-    --footer-color: #000000;
-  }
+  --primary-color: #1F3B73; /* Deep navy blue */
+  --secondary-color: #E6F1FA; /* Soft light blue */
+  --accent-color: #2A74A3; /* Rich blue for highlights */
+  --heading-color: #0D223B; /* Dark blue for contrast */
+  --footer-color: #162A47; /* Slightly darker navy for grounding */
+}
+
   
   body {
     background-color: var(--primary-color);

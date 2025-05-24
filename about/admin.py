@@ -13,6 +13,8 @@ from .models import Metrics
 import matplotlib.pyplot as plt
 from matplotlib.dates import DateFormatter
 from django.utils.timezone import now, timedelta
+from django.utils.dateparse import parse_datetime
+from django.utils.dateparse import parse_datetime
 
 class MetricsAdmin(admin.ModelAdmin):
     change_list_template = "admin/about/metrics_dashboard.html"
@@ -21,6 +23,7 @@ class MetricsAdmin(admin.ModelAdmin):
         urls = super().get_urls()
         custom_urls = [
             path('dashboard/', self.admin_site.admin_view(self.metrics_dashboard_view), name='metrics_dashboard'),
+            path('dashboard/chart/<str:event_type>/', self.admin_site.admin_view(self.metrics_chart_view), name='metrics_chart'),
         ]
         return custom_urls + urls
 
@@ -33,6 +36,10 @@ class MetricsAdmin(admin.ModelAdmin):
             # Default to the last 7 days
             end_date = now()
             start_date = end_date - timedelta(days=7)
+        else:
+            # Parse string dates to datetime
+            start_date = parse_datetime(start_date)
+            end_date = parse_datetime(end_date)
 
         metrics = Metrics.objects.filter(timestamp__range=[start_date, end_date])
 
@@ -47,33 +54,41 @@ class MetricsAdmin(admin.ModelAdmin):
             'start_date': start_date,
             'end_date': end_date,
             'data': data,
+            'event_types': [et[0] for et in Metrics.EVENT_TYPES],
         }
         return render(request, 'admin/about/metrics_dashboard.html', context)
 
-    def plot_chart(self, metrics, event_type):
-        # Filter data for the event type
-        data = metrics.filter(event_type=event_type)
+    def metrics_chart_view(self, request, event_type):
+        # Get filtering parameters
+        start_date = request.GET.get('start_date')
+        end_date = request.GET.get('end_date')
 
-        timestamps = [metric['timestamp'] for metric in data]
-        counts = [metric['count'] for metric in data]
+        if not start_date or not end_date:
+            end_date = now()
+            start_date = end_date - timedelta(days=7)
+        else:
+            start_date = parse_datetime(start_date)
+            end_date = parse_datetime(end_date)
 
-        plt.figure(figsize=(10, 6))
+        metrics = Metrics.objects.filter(timestamp__range=[start_date, end_date], event_type=event_type).order_by('timestamp')
+        timestamps = [m.timestamp for m in metrics]
+        counts = [m.count for m in metrics]
+
+        plt.figure(figsize=(10, 4))
         plt.plot(timestamps, counts, marker='o', label=event_type.capitalize())
-
         plt.title(f'{event_type.capitalize()} Analytics')
         plt.xlabel('Date')
         plt.ylabel('Count')
         plt.legend()
-
-        # Format x-axis dates
+        plt.tight_layout()
         plt.gca().xaxis.set_major_formatter(DateFormatter('%Y-%m-%d'))
+        plt.gcf().autofmt_xdate()
 
-        # Save chart to a BytesIO buffer
         buffer = BytesIO()
         plt.savefig(buffer, format='png')
+        plt.close()
         buffer.seek(0)
         return HttpResponse(buffer, content_type='image/png')
-
 
 admin.site.register(Metrics, MetricsAdmin)
 

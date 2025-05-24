@@ -9,158 +9,137 @@ FONT_AWESOME_ICONS = [
     ("fas fa-code", "C++"),
     ("fas fa-database", "SQL"),
     ("fab fa-swift", "Swift"),
-
+    ("fab fa-rust", "Rust"),
+    ("fab fa-go", "Golang"),
+    ("fab fa-android", "Dart"),  # Alternative for Dart
+    ("fas fa-mobile-alt", "Kotlin"),  # Alternative for Kotlin
+    ("fab fa-js-square", "TypeScript"),  # Alternative for TypeScript
+    ("fas fa-gem", "Ruby"),  # Alternative for Ruby
+    ("fas fa-magic", "Elixir"),  # Alternative for Elixir
+    ("fas fa-server", "Scala"),  # Alternative for Scala
     
+    # Mobile & Cross-Platform
+    ("fab fa-android", "Android"),
+    ("fab fa-apple", "iOS"),
+    ("fas fa-mobile", "Flutter"),  # Alternative for Flutter
+    ("fab fa-react", "React Native"),
+    ("fas fa-code-branch", "Xamarin"),  # Alternative for Xamarin
+    ("fas fa-mobile-alt", "Ionic"),  # Alternative for Ionic
+
+    # Design Tools
+    ("fab fa-figma", "Figma"),
+    ("fas fa-pencil-ruler", "Sketch"),  # Alternative for Sketch
+    ("fas fa-paint-brush", "Adobe XD"),  # Alternative for Adobe XD
+    ("fas fa-palette", "Illustrator"),  # Alternative for Illustrator
+    ("fas fa-image", "Photoshop"),  # Alternative for Photoshop
+    ("fas fa-book", "InDesign"),  # Alternative for InDesign
+    ("fas fa-cube", "Blender"),  # Alternative for Blender
+    ("fas fa-ruler-combined", "AutoCAD"),  # Alternative for AutoCAD
+
     # Tools and Frameworks
     ("fab fa-git-alt", "Git"),
     ("fab fa-github", "GitHub"),
+    ("fab fa-gitlab", "GitLab"),
+    ("fab fa-bitbucket", "Bitbucket"),
     ("fab fa-docker", "Docker"),
+    ("fas fa-server", "Jenkins"),  # Alternative for Jenkins
+    ("fas fa-cubes", "Kubernetes"),  # Alternative for Kubernetes
     ("fas fa-cloud", "Cloud"),
     ("fab fa-aws", "AWS"),
-    ("fab fa-linux", "Linux"),
-    ("fab fa-windows", "Windows"),
-    ("fab fa-android", "Android"),
-    ("fab fa-apple", "iOS"),
-    ("fab fa-bootstrap", "Bootstrap"),
+    ("fab fa-google", "GCP"),
+    ("fab fa-microsoft", "Azure"),
+    ("fas fa-water", "DigitalOcean"),  # Alternative for DigitalOcean
+    ("fab fa-ubuntu", "Ubuntu"),
+    ("fas fa-hat-cowboy", "Red Hat"),  # Alternative for Red Hat
+    ("fab fa-linux", "SUSE"),  # Alternative for SUSE
+
+    # Web Frameworks
     ("fab fa-react", "React"),
     ("fab fa-angular", "Angular"),
-    ("fab fa-node-js", "Node.js"),
-    ("fab fa-laravel", "Laravel"),
     ("fab fa-vuejs", "Vue.js"),
-    ("fab fa-wordpress", "WordPress"),
-    ("fab fa-joomla", "Joomla"),
-    ("fab fa-npm", "npm"),
-    ("fab fa-yarn", "Yarn"),
-    ("fab fa-sass", "Sass"),
-    ("fab fa-less", "Less"),
-    ("fab fa-gulp", "Gulp"),
-    ("fab fa-grunt", "Grunt"),
-    ("fab fa-webpack", "Webpack"),
-    ("fab fa-figma", "Figma"),
-    ("fab fa-adobe", "Adobe XD"),
-    ("fab fa-sketch", "Sketch"),
-    
-    # Firmware and IoT
-    ("fas fa-microchip", "Firmware"),
-    ("fas fa-satellite-dish", "IoT Devices"),
-    ("fas fa-cogs", "Embedded Systems"),
-    ("fas fa-robot", "Robotics"),
-    ("fas fa-wifi", "Sensors"),
-    ("fas fa-project-diagram", "Automation"),
-    
-    # General Skills
-    ("fas fa-chart-line", "Data Analysis"),
-    ("fas fa-robot", "Machine Learning"),
-    ("fas fa-shield-alt", "Cybersecurity"),
-    ("fas fa-vial", "Software Testing"),
-    ("fas fa-tools", "DevOps"),
-    ("fas fa-network-wired", "Networking"),
-    ("fas fa-link", "Blockchain"),
-    ("fas fa-robot", "Artificial Intelligence"),
-    ("fas fa-robot", "Natural Language Processing"),
-    ("fas fa-robot", "Computer Vision"),
-    ("fas fa-robot", "Deep Learning"),
-    ("fas fa-robot", "Neural Networks"),
-    ("fas fa-robot", "Reinforcement Learning"),
-    ("fas fa-robot", "Supervised Learning"),
-    ("fas fa-robot", "Unsupervised Learning"),
-    ("fas fa-robot", "Semi-supervised Learning"),
-    ("fas fa-robot", "Transfer Learning"),
-    ("fas fa-robot", "Generative Adversarial Networks"),
-    ("fas fa-robot", "Convolutional Neural Networks"),
-    ("fas fa-robot", "Recurrent Neural Networks"),
-    ("fas fa-robot", "Long Short-Term Memory"),
-    ("fas fa-robot", "Gated Recurrent Unit"),
-    ("fas fa-robot", "Bidirectional Recurrent Neural Networks"),
-    ("fas fa-robot", "Transformer Networks"),
-    ("fas fa-robot", "BERT"),
-    ("fas fa-robot", "GPT-3"),
-    ("fas fa-robot", "Deep Reinforcement Learning"),
-    ("fas fa-robot", "Q-Learning"),
-    ("fas fa-robot", "Deep Q-Learning"),
-    ("fas fa-robot", "Policy Gradient Methods"),
-    ("fas fa-robot", "Actor-Critic Methods"),
-    ("fas fa-robot", "Proximal Policy Optimization"),
-    ("fas fa-robot", "Deep Deterministic Policy Gradient"),
-    ("fas fa-robot", "Twin Delayed Deep Deterministic Policy Gradient"),
-    ("fas fa-robot", "Soft Actor-Critic"),
-    ("fas fa-robot", "Model-Based Reinforcement Learning"),
-    ("fas fa-robot", "Model-Free Reinforcement Learning"),
-    ("fas fa-robot", "Imitation Learning"),
-    ("fas fa-robot", "Meta-Learning"),
-    ("fas fa-robot", "Multi-Agent Reinforcement Learning"),
-    ("fas fa-robot", "Multi-Task Learning"),
-    ("fas fa-robot", "Transfer Learning"),
-    ("fas fa-robot", "Zero-Shot Learning"),
-    ("fas fa-robot", "Few-Shot Learning"),
-    ("fas fa-robot", "One-Shot Learning"),
-    ("fas fa-robot", "Self-Supervised Learning"),
-    ("fas fa-robot", "Semi-Supervised Learning"),
-    ("fas fa-robot", "Unsupervised Learning"),
-    ("fas fa-robot", "Self-Attention Mechanism"),
-    ("fas fa-robot", "Attention Mechanism"),
-    ("fas fa-robot", "Transformer Networks"),
-    ("fas fa-robot", "BERT"),
-    ("fas fa-robot", "GPT-3"),
-    ("fas fa-robot", "Deep Learning Frameworks"),
-    ("fas fa-robot", "TensorFlow"),
-    ("fas fa-robot", "Keras"),
-    ("fas fa-robot", "PyTorch"),
-    ("fas fa-robot", "MXNet"),
-    ("fas fa-robot", "Theano"),
-    ("fas fa-robot", "Deep Learning Libraries"),
-    ("fas fa-robot", "NumPy"),
-    ("fas fa-robot", "Pandas"),
-    ("fas fa-robot", "Matplotlib"),
-    ("fas fa-robot", "Seaborn"),
-    ("fas fa-robot", "Scikit-Learn"),
-    ("fas fa-robot", "NLTK"),
-    ("fas fa-robot", "SpaCy"),
-    ("fas fa-robot", "Gensim"),
-    ("fas fa-robot", "OpenCV"),
-    ("fas fa-robot", "Scrapy"),
-    ("fas fa-robot", "Beautiful Soup"),
-    ("fas fa-robot", "TensorFlow"),
-    ("fas fa-robot", "Keras"),
-    ("fas fa-robot", "PyTorch"),
-    ("fas fa-robot", "MXNet"),
-    ("fas fa-robot", "Theano"),
-    ("fas fa-robot", "Deep Learning Libraries"),
-    ("fas fa-robot", "NumPy"),
-    ("fas fa-robot", "Pandas"),
-    ("fas fa-robot", "Matplotlib"),
-    ("fas fa-robot", "Seaborn"),
-    ("fas fa-robot", "Scikit-Learn"),
-    ("fas fa-robot", "NLTK"),
-    ("fas fa-robot", "SpaCy"),
-    ("fas fa-robot", "Gensim"),
-    ("fas fa-robot", "OpenCV"),
-    ("fas fa-robot", "Scrapy"),
-    ("fas fa-robot", "Beautiful Soup"),
-    ("fas fa-robot", "Deep Learning Frameworks"),
-    ("fas fa-robot", "TensorFlow"),
-    ("fas fa-robot", "Keras"),
-    ("fas fa-robot", "PyTorch"),
-    ("fas fa-robot", "MXNet"),
-    ("fas fa-robot", "Theano"),
-    ("fas fa-robot", "Deep Learning Libraries"),
-    ("fas fa-robot", "NumPy"),
-    ("fas fa-robot", "Pandas"),
-    ("fas fa-robot", "Matplotlib"),
-    ("fas fa-robot", "Seaborn"),
-    ("fas fa-robot", "Scikit-Learn"),
-    ("fas fa-robot", "NLTK"),
-    ("fas fa-robot", "SpaCy"),
-    ("fas fa-robot", "Gensim"),
-    ("fas fa-robot", "OpenCV"),
-    ("fas fa-robot", "Scrapy"),
-    ("fas fa-robot", "Beautiful Soup"),
-    ("fas fa-robot", "Deep Learning Frameworks"),
-    ("fas fa-robot", "TensorFlow"),
-    ("fas fa-robot", "Keras"),
-    
-    # Common Icon
-    ("fas fa-certificate", "Default Skill"),
+    ("fas fa-bolt", "Svelte"),  # Alternative for Svelte
+    ("fas fa-forward", "Next.js"),  # Alternative for Next.js
+    ("fas fa-fast-forward", "Nuxt.js"),  # Alternative for Nuxt.js
+    ("fab fa-laravel", "Laravel"),
+    ("fas fa-leaf", "Django"),  # Alternative for Django
+    ("fas fa-flask", "Flask"),  # Note: Flask has an icon in FA
+    ("fas fa-gem", "Ruby on Rails"),  # Alternative for Rails
+    ("fas fa-seedling", "Spring"),  # Alternative for Spring
 
-    # Add more icons here
+    # Databases
+    ("fas fa-database", "MySQL"),
+    ("fas fa-elephant", "PostgreSQL"),  # Alternative for PostgreSQL
+    ("fas fa-leaf", "MongoDB"),  # Alternative for MongoDB
+    ("fas fa-memory", "Redis"),  # Alternative for Redis
+    ("fas fa-project-diagram", "Cassandra"),  # Alternative for Cassandra
+    ("fas fa-database", "MariaDB"),  # Same as MySQL
+    ("fas fa-database", "SQLite"),  # Same as MySQL
+
+    # CMS and E-commerce
+    ("fab fa-wordpress", "WordPress"),
+    ("fas fa-shopping-cart", "Shopify"),  # Alternative for Shopify
+    ("fas fa-store", "Magento"),  # Alternative for Magento
+    ("fas fa-cart-plus", "WooCommerce"),  # Alternative for WooCommerce
+    ("fas fa-cms", "Drupal"),  # Alternative for Drupal
+    ("fas fa-box-open", "Joomla"),  # Alternative for Joomla
+
+    # Testing
+    ("fas fa-vial", "Jest"),  # Alternative for Jest
+    ("fas fa-flask", "Mocha"),  # Alternative for Mocha
+    ("fas fa-vial", "Jasmine"),  # Alternative for Jasmine
+    ("fas fa-desktop", "Cypress"),  # Alternative for Cypress
+    ("fas fa-check-circle", "Selenium"),  # Alternative for Selenium
+
+    # Additional tools
+    ("fas fa-paper-plane", "Postman"),  # Alternative for Postman
+    ("fas fa-book-open", "Swagger"),  # Alternative for Swagger
+    ("fas fa-project-diagram", "GraphQL"),  # Alternative for GraphQL
+    ("fas fa-rocket", "Apollo"),  # Alternative for Apollo
+    ("fas fa-plug", "Socket.io"),  # Alternative for Socket.io
+    ("fas fa-puzzle-piece", "Web Components"),  # Alternative for Web Components
+
+    # AI/ML Frameworks
+    ("fas fa-project-diagram", "TensorFlow"),  # Alternative for TensorFlow
+    ("fas fa-layer-group", "Keras"),  # Alternative for Keras
+    ("fas fa-brain", "PyTorch"),  # Alternative for PyTorch
+    ("fas fa-fire", "Spark"),  # Alternative for Spark
+    ("fas fa-elephant", "Hadoop"),  # Alternative for Hadoop
+    ("fas fa-robot", "BERT"),  # Alternative for BERT
+    ("fas fa-robot", "GPT-3"),  # Alternative for GPT-3
+
+    # Data Science Libraries
+    ("fas fa-superscript", "NumPy"),
+    ("fas fa-table", "Pandas"),
+    ("fas fa-chart-bar", "Matplotlib"),
+    ("fas fa-chart-pie", "Seaborn"),
+    ("fas fa-project-diagram", "Scikit-learn"),
+    ("fas fa-language", "NLTK"),
+    ("fas fa-language", "SpaCy"),
+    ("fas fa-camera", "OpenCV"),
+    ("fas fa-spider", "Scrapy"),
+
+    # Soft Skills (unchanged)
+    ("fas fa-users", "Teamwork"),
+    ("fas fa-comments", "Communication"),
+    ("fas fa-lightbulb", "Problem Solving"),
+    ("fas fa-handshake", "Collaboration"),
+    ("fas fa-clock", "Time Management"),
+    ("fas fa-user-check", "Accountability"),
+    ("fas fa-user-shield", "Integrity"),
+    ("fas fa-brain", "Critical Thinking"),
+    ("fas fa-user-cog", "Adaptability"),
+    ("fas fa-graduation-cap", "Willingness to Learn"),
+    ("fas fa-flag", "Leadership"),
+    ("fas fa-heart", "Empathy"),
+    ("fas fa-user-friends", "Interpersonal Skills"),
+    ("fas fa-paint-brush", "Creativity"),
+    ("fas fa-bolt", "Initiative"),
+    ("fas fa-tag", "Responsibility"),
+    ("fas fa-peace", "Conflict Resolution"),
+    ("fas fa-random", "Flexibility"),
+    ("fas fa-globe-americas", "Open-mindedness"),
+    ("fas fa-lock", "Trustworthiness"),
+
+    # Default fallback
+    ("fas fa-certificate", "Default Skill")
 ]

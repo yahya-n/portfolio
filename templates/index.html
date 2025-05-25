@@ -3,6 +3,8 @@
 {% block title %}Home - Portfolio{% endblock %}
 
 {% block content %}
+
+
 <!-- Animated Background Canvas -->
 <canvas id="animated-bg" class="fixed-top vh-100 w-100"></canvas>
 
@@ -22,10 +24,10 @@
         <p class="lead mb-5 text-start" style="margin-left:0;">{{ profile.short_bio|default:"Creating digital experiences that matter." }}</p>
         <div class="d-flex flex-column flex-sm-row gap-3 justify-content-start">
           <a href="{{ profile.cv.url }}" class="btn btn-primary btn-lg px-4 py-3 rounded-pill shadow hover-3d wow-btn" download>
-            <span class="d-flex align-items-center justify-content-center">
-              <i class="fas fa-download me-2"></i> Download CV
+            <span class="d-flex align-items-center justify-content-center" data-track-event="download_cv">
+                <i class="fas fa-download me-2"></i> Download CV
             </span>
-          </a>
+        </a>
           <a href="#contact" class="btn btn-outline-light btn-lg px-4 py-3 rounded-pill hover-3d wow-btn">
             <span class="d-flex align-items-center justify-content-center">
               <i class="fas fa-paper-plane me-2"></i> Contact Me
@@ -48,22 +50,22 @@
           </div>
           <!-- Social Icons: Desktop floating, mobile inline -->
           <div class="social-float d-none d-md-flex flex-column align-items-center">
-            <a href="{{ profile.github_link }}" class="social-icon github hover-grow" target="_blank" aria-label="GitHub">
-        <i class="fab fa-github"></i>
+            <a href="{{ profile.github_link }}" data-track-event="github" class="social-icon github hover-grow" target="_blank" aria-label="GitHub">
+                <i class="fab fa-github"></i>
             </a>
-            <a href="{{ profile.linkedin_link }}" class="social-icon linkedin hover-grow" target="_blank" aria-label="LinkedIn">
-        <i class="fab fa-linkedin-in"></i>
+            <a href="{{ profile.linkedin_link }}" data-track-event="linkedin" class="social-icon linkedin hover-grow" target="_blank" aria-label="LinkedIn">
+                <i class="fab fa-linkedin-in"></i>
             </a>
-            <a href="{{ profile.twitter_link }}" class="social-icon twitter hover-grow" target="_blank" aria-label="Twitter">
-        <i class="fab fa-x-twitter"></i>
-        <i class="fab fa-twitter"></i>
+            <a href="{{ profile.twitter_link }}" data-track-event="twitter" class="social-icon twitter hover-grow" target="_blank" aria-label="Twitter">
+                <i class="fab fa-x-twitter"></i>
+                <i class="fab fa-twitter"></i>
             </a>
-          </div>
+        </div>
           <div class="d-flex justify-content-start d-md-none mt-4 gap-3" style="margin-left:0;">
-            <a href="{{ profile.github_link }}" class="social-icon github hover-grow" target="_blank" aria-label="GitHub">
+            <a href="{{ profile.github_link }}" class="social-icon github hover-grow" data-track-event="github" target="_blank" aria-label="GitHub">
         <i class="fab fa-github"></i>
             </a>
-            <a href="{{ profile.linkedin_link }}" class="social-icon linkedin hover-grow" target="_blank" aria-label="LinkedIn">
+            <a href="{{ profile.linkedin_link }}" data-track-event="linkedin" class="social-icon linkedin hover-grow" target="_blank" aria-label="LinkedIn">
         <i class="fab fa-linkedin-in"></i>
             </a>
             <a href="{{ profile.twitter_link }}" class="social-icon twitter hover-grow" target="_blank" aria-label="Twitter">
@@ -913,7 +915,7 @@
           <p class="project-description mb-3" style="color:#495057; font-size:1.05rem;">{{ project.short_description }}</p>
           <div class="project-links d-flex gap-3 flex-wrap">
           {% if project.github_link %}
-          <a href="{{ project.github_link }}" class="project-link btn btn-sm btn-outline-dark rounded-pill px-3 py-2 d-flex align-items-center gap-2" target="_blank" style="font-weight:600;">
+          <a href="{{ project.github_link }}" data-track-event="github" class="project-link btn btn-sm btn-outline-dark rounded-pill px-3 py-2 d-flex align-items-center gap-2" target="_blank" style="font-weight:600;">
             <i class="fab fa-github"></i> Code
           </a>
           {% endif %}
@@ -1173,10 +1175,10 @@
           </div>
           
           <div class="contact-social mt-5">
-            <a href="{{ profile.github_link }}" class="social-circle github" target="_blank">
+            <a href="{{ profile.github_link }}" data-track-event="github" class="social-circle github" target="_blank">
               <i class="fab fa-github"></i>
             </a>
-            <a href="{{ profile.linkedin_link }}" class="social-circle linkedin" target="_blank">
+            <a href="{{ profile.linkedin_link }}" data-track-event="linkedin" class="social-circle linkedin" target="_blank">
               <i class="fab fa-linkedin-in"></i>
             </a>
             <a href="{{ profile.twitter_link }}" class="social-circle twitter" target="_blank">
@@ -1187,7 +1189,7 @@
       </div>
       
       <div class="col-lg-6" data-gsap="fade-left">
-        <form id="contactForm" class="contact-form hover-3d">
+        <form id="contactForm" class="contact-form hover-3d" data-track-event="contact_form_submission">
           {% csrf_token %}
           <div class="form-floating mb-4">
             <input type="text" class="form-control" id="name" name="name" placeholder="Your Name" required>
@@ -1253,10 +1255,10 @@
       <!-- Social & Contact -->
       <div class="col-lg-4 text-center mb-4 mb-lg-0">
         <div class="footer-social justify-content-center mb-3 animate-fadeInUp delay-200">
-          <a href="{{ profile.github_link }}" class="footer-social-link" target="_blank" aria-label="GitHub">
+          <a href="{{ profile.github_link }}" data-track-event="github" class="footer-social-link" target="_blank" aria-label="GitHub">
             <i class="fab fa-github"></i>
           </a>
-          <a href="{{ profile.linkedin_link }}" class="footer-social-link" target="_blank" aria-label="LinkedIn">
+          <a href="{{ profile.linkedin_link }}" data-track-event="linkedin" class="footer-social-link" target="_blank" aria-label="LinkedIn">
             <i class="fab fa-linkedin-in"></i>
           </a>
           <a href="{{ profile.twitter_link }}" class="footer-social-link" target="_blank" aria-label="Twitter">
@@ -1674,6 +1676,7 @@
     }
   });
 </script>
+
 
 <style>
   /* Base Styles */
@@ -3104,4 +3107,76 @@
 }
 
 </style>
+<!-- Replace the existing JavaScript section in your index.html with this: -->
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+      console.log('Tracking script loaded'); // Debug line
+      
+      // Function to get CSRF token
+      function getCookie(name) {
+          let cookieValue = null;
+          if (document.cookie && document.cookie !== '') {
+              const cookies = document.cookie.split(';');
+              for (let i = 0; i < cookies.length; i++) {
+                  const cookie = cookies[i].trim();
+                  if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                      cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                      break;
+                  }
+              }
+          }
+          return cookieValue;
+      }
+  
+      // Function to send tracking data
+      function trackEvent(eventType) {
+          console.log('Tracking event:', eventType); // Debug line
+          
+          fetch('/track-event/', {
+              method: 'POST',
+              headers: {
+                  'Content-Type': 'application/json',
+                  'X-CSRFToken': getCookie('csrftoken'),
+              },
+              body: JSON.stringify({
+                  'event_type': eventType
+              })
+          })
+          .then(response => response.json())
+          .then(data => {
+              console.log('Tracking response:', data); // Debug line
+          })
+          .catch(error => {
+              console.error('Tracking error:', error);
+          });
+      }
+  
+      // Track all elements with data-track-event attribute
+      document.querySelectorAll('[data-track-event]').forEach(element => {
+          element.addEventListener('click', function(e) {
+              const eventType = this.getAttribute('data-track-event');
+              console.log('Element clicked:', eventType); // Debug line
+              
+              // Track the event
+              trackEvent(eventType);
+              
+              // For external links, allow them to open normally
+              // For downloads, allow them to download normally
+              // Don't prevent default behavior
+          });
+      });
+  
+      // Special handling for contact form submission
+      const contactForm = document.getElementById('contact-form');
+      if (contactForm) {
+          contactForm.addEventListener('submit', function(e) {
+              console.log('Contact form submitted'); // Debug line
+              trackEvent('contact_form_submission');
+              // Don't prevent default - let form submit normally
+          });
+      }
+  });
+  </script>
+
+
 {% endblock content %}

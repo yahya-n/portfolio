@@ -4,51 +4,102 @@ from django.utils.timezone import now
 from django.db import models
 from django.utils.timezone import now
 
+from django.db import models
+from django.utils.timezone import now
+from datetime import timedelta
+
+from django.utils.timezone import now
+from django.db.models import Count
+from django.db.models.functions import TruncMonth , TruncDay, TruncYear
+
 class Metrics(models.Model):
     EVENT_TYPES = [
+        ('page_view', 'Page View'),
         ('linkedin', 'LinkedIn Click'),
         ('github', 'GitHub Click'),
-        ('cv', 'CV Download'),
-        ('message', 'Message Sent'),
-        ('website_view', 'Website View'),
+        ('twitter', 'Twitter Click'),
+        ('download_cv', 'CV Download'),
+        ('send_message', 'Message Sent'),
     ]
     
-    event_type = models.CharField(max_length=50, choices=EVENT_TYPES)
-    count = models.PositiveIntegerField(default=1)
+    event_type = models.CharField(max_length=20, choices=EVENT_TYPES)
     timestamp = models.DateTimeField(default=now)
-    def get_current_month():
-        return now().month
+    count = models.IntegerField(default=1)
+    session_key = models.CharField(max_length=40, blank=True, null=True)
+    ip_address = models.CharField(max_length=45, blank=True, null=True)
+    user_agent = models.CharField(max_length=255, blank=True, null=True)
+    path = models.CharField(max_length=255, blank=True, null=True)
+    referrer = models.CharField(max_length=512, blank=True, null=True)
 
-    def get_current_year():
-        return now().year
 
-    month = models.PositiveSmallIntegerField(default=get_current_month, editable=False)
-    year = models.PositiveSmallIntegerField(default=get_current_year, editable=False)
+    class Meta:
+        verbose_name_plural = "Metrics"
+        ordering = ['-timestamp']
 
-    def save(self, *args, **kwargs):
-        if not self.id:
-            self.month = self.timestamp.month
-            self.year = self.timestamp.year
-        super().save(*args, **kwargs)
+    
+    @classmethod
+    def get_current_month(cls):
+        """Get metrics for current month grouped by day"""
+        today = now()
+        first_day = today.replace(day=1)
+        return cls.objects.filter(
+            timestamp__range=[first_day, today]
+        ).annotate(
+            day=TruncDay('timestamp')
+        ).values('day', 'event_type').annotate(
+            total=Count('id')
+        ).order_by('day')
 
     @classmethod
-    def increment_website_view(cls):
-        now_time = now()
-        obj, created = cls.objects.get_or_create(
-            event_type='website_view',
-            month=now_time.month,
-            year=now_time.year,
-            defaults={'timestamp': now_time}
-        )
-        if not created:
-            obj.count += 1
-            obj.timestamp = now_time
-            obj.save(update_fields=['count', 'timestamp'])
-        return obj
+    def get_current_year(cls):
+        """Get metrics for current year grouped by month"""
+        today = now()
+        first_day = today.replace(month=1, day=1)
+        return cls.objects.filter(
+            timestamp__range=[first_day, today]
+        ).annotate(
+            month=TruncMonth('timestamp')
+        ).values('month', 'event_type').annotate(
+            total=Count('id')
+        ).order_by('month')
+    
+    @classmethod
+    def get_daily_stats(cls, days=30):
+        """Get daily stats for the last X days"""
+        end_date = now()
+        start_date = end_date - timedelta(days=days)
+        
+        return cls.objects.filter(
+            timestamp__range=[start_date, end_date]
+        ).annotate(
+            day=TruncDay('timestamp')
+        ).values('day', 'event_type').annotate(
+            count=Count('id')
+        ).order_by('day')
+    
+    @classmethod
+    def get_top_events(cls, limit=5):
+        """Get most frequent events"""
+        return cls.objects.values('event_type').annotate(
+            count=Count('id')
+        ).order_by('-count')[:limit]
+    
+    @classmethod
+    def get_visitor_stats(cls):
+        """Get visitor statistics"""
+        total_visitors = cls.objects.values('session_key').distinct().count()
+        returning_visitors = cls.objects.values('session_key').annotate(
+            visit_count=Count('id')
+        ).filter(visit_count__gt=1).count()
+        
+        return {
+            'total': total_visitors,
+            'returning': returning_visitors,
+            'new': total_visitors - returning_visitors
+        }
 
     def __str__(self):
-        return f"{self.get_event_type_display()} - {self.timestamp.strftime('%Y-%m-%d %H:%M')} (Count: {self.count})"
-
+        return f"{self.get_event_type_display()} at {self.timestamp}"
 
 class Profile(models.Model):
     name = models.CharField(max_length=100)

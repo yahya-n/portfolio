@@ -1,53 +1,287 @@
 {% extends "admin/base_site.html" %}
 {% load static %}
+
+{% block extrastyle %}
+{{ block.super }}
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<style>
+    .dashboard-container {
+        padding: 20px;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+    .chart-container {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        padding: 20px;
+        margin-bottom: 30px;
+    }
+    .summary-cards {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+        gap: 20px;
+        margin-bottom: 30px;
+    }
+    .summary-card {
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        padding: 20px;
+        text-align: center;
+    }
+    .summary-card h3 {
+        margin-top: 0;
+        color: #666;
+    }
+    .summary-card .value {
+        font-size: 24px;
+        font-weight: bold;
+        margin: 10px 0;
+    }
+    .controls {
+        display: flex;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 15px;
+    }
+    .date-range {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+    }
+    .refresh-btn {
+        background: #417690;
+        color: white;
+        border: none;
+        padding: 8px 15px;
+        border-radius: 4px;
+        cursor: pointer;
+    }
+    .time-periods {
+        display: flex;
+        gap: 10px;
+    }
+    .time-period {
+        padding: 5px 10px;
+        border-radius: 4px;
+        background: #f5f5f5;
+        cursor: pointer;
+    }
+    .time-period.active {
+        background: #417690;
+        color: white;
+    }
+    canvas {
+        width: 100% !important;
+        height: 400px !important;
+    }
+</style>
+{% endblock %}
+
 {% block content %}
-<h1 class="text-center mb-4">Metrics Dashboard</h1>
-
-<!-- Date Filter Form -->
-<form method="get" class="d-flex align-items-center justify-content-center gap-3 mb-4">
-    <label for="start_date">Start Date:</label>
-    <input type="date" id="start_date" name="start_date" value="{{ start_date }}">
-    <label for="end_date">End Date:</label>
-    <input type="date" id="end_date" name="end_date" value="{{ end_date }}">
-    <button type="submit" class="btn btn-primary">Update Chart</button>
-</form>
-
-<!-- Chart Container -->
-<div class="chart-container">
-    <canvas id="metricsChart"></canvas>
+<div class="dashboard-container">
+    <h1>Portfolio Analytics Dashboard</h1>
+    
+    <div class="controls">
+        <div class="date-range">
+            <input type="text" id="start-date" class="datepicker" placeholder="Start Date">
+            <span>to</span>
+            <input type="text" id="end-date" class="datepicker" placeholder="End Date">
+            <button id="apply-dates" class="refresh-btn">Apply</button>
+        </div>
+        
+        <div class="time-periods">
+            <div class="time-period" data-days="7">Last 7 Days</div>
+            <div class="time-period" data-days="30">Last 30 Days</div>
+            <div class="time-period active" data-days="0">This Month</div>
+        </div>
+        
+        <button id="refresh-data" class="refresh-btn">
+            <i class="fas fa-sync-alt"></i> Refresh
+        </button>
+    </div>
+    
+    <div class="summary-cards">
+        <div class="summary-card">
+            <h3>Total Page Views</h3>
+            <div class="value" id="total-page-views">0</div>
+            <div class="change" id="page-views-change"></div>
+        </div>
+        <div class="summary-card">
+            <h3>Total Interactions</h3>
+            <div class="value" id="total-interactions">0</div>
+            <div class="change" id="interactions-change"></div>
+        </div>
+        <div class="summary-card">
+            <h3>Unique Visitors</h3>
+            <div class="value" id="unique-visitors">0</div>
+            <div class="change" id="visitors-change"></div>
+        </div>
+        <div class="summary-card">
+            <h3>CV Downloads</h3>
+            <div class="value" id="cv-downloads">0</div>
+            <div class="change" id="downloads-change"></div>
+        </div>
+    </div>
+    
+    <div class="chart-container">
+        <h2>Activity Over Time</h2>
+        <canvas id="activityChart"></canvas>
+    </div>
+    
+    <div class="chart-container">
+        <h2>Event Distribution</h2>
+        <canvas id="eventDistributionChart"></canvas>
+    </div>
 </div>
+{% endblock %}
 
+{% block extrajs %}
+{{ block.super }}
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
 <script>
-    // Prepare chart data
-    const chartData = "{{ data|safe }}";
-    const labels = Object.values(data)[0]?.labels || []; // Use labels from the first dataset
-
-    // Prepare datasets for all event types
-    const datasets = Object.keys(chartData).map((eventType, index) => ({
-        label: eventType.charAt(0).toUpperCase() + eventType.slice(1),
-        data: chartData[eventType].values,
-        borderColor: ['#007bff', '#28a745', '#dc3545', '#ffc107'][index % 4],
-        fill: false,
-    }));
-
-    // Initialize Chart.js
-    const ctx = document.getElementById('metricsChart').getContext('2d');
-    if (labels.length > 0) {
-        new Chart(ctx, {
+    // Initialize date pickers
+    flatpickr(".datepicker", {
+        dateFormat: "Y-m-d",
+        defaultDate: "{{ default_start }}"
+    });
+    
+    document.getElementById('start-date')._flatpickr.setDate('{{ default_start }}');
+    document.getElementById('end-date')._flatpickr.setDate('{{ default_end }}');
+    
+    // Chart instances
+    let activityChart, distributionChart;
+    
+    // Load data function
+    function loadData(startDate, endDate) {
+        const url = `{% url 'admin:metrics_data' %}?start_date=${startDate}&end_date=${endDate}`;
+        
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                updateSummary(data.summary);
+                updateCharts(data.labels, data.datasets);
+            })
+            .catch(error => console.error('Error:', error));
+    }
+    
+    // Update summary cards
+    function updateSummary(summary) {
+        document.getElementById('total-page-views').textContent = summary.total_page_views;
+        document.getElementById('total-interactions').textContent = summary.total_interactions;
+        document.getElementById('unique-visitors').textContent = summary.unique_visitors;
+        document.getElementById('cv-downloads').textContent = summary.cv_downloads;
+        
+        // Update change indicators (you can enhance this)
+        document.getElementById('page-views-change').textContent = summary.page_views_change;
+        document.getElementById('interactions-change').textContent = summary.interactions_change;
+        document.getElementById('visitors-change').textContent = summary.visitors_change;
+        document.getElementById('downloads-change').textContent = summary.downloads_change;
+    }
+    
+    // Update charts
+    function updateCharts(labels, datasets) {
+        // Destroy existing charts if they exist
+        if (activityChart) activityChart.destroy();
+        if (distributionChart) distributionChart.destroy();
+        
+        // Prepare data for distribution chart (pie chart)
+        const distributionData = {
+            labels: datasets.map(d => d.label),
+            datasets: [{
+                data: datasets.map(d => d.data.reduce((a, b) => a + b, 0)),
+                backgroundColor: datasets.map(d => d.backgroundColor)
+            }]
+        };
+        
+        // Activity chart (line chart)
+        const ctx1 = document.getElementById('activityChart').getContext('2d');
+        activityChart = new Chart(ctx1, {
             type: 'line',
-            data: { labels, datasets },
+            data: {
+                labels: labels,
+                datasets: datasets
+            },
             options: {
                 responsive: true,
-                plugins: { legend: { display: true } },
-                scales: {
-                    x: { title: { display: true, text: 'Date' } },
-                    y: { title: { display: true, text: 'Interactions' }, beginAtZero: true },
+                plugins: {
+                    legend: {
+                        position: 'top',
+                    },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                    }
                 },
-            },
+                scales: {
+                    y: {
+                        beginAtZero: true
+                    }
+                }
+            }
         });
-    } else {
-        ctx.fillText("No data available for the selected period.", 50, 50);
+        
+        // Distribution chart (doughnut chart)
+        const ctx2 = document.getElementById('eventDistributionChart').getContext('2d');
+        distributionChart = new Chart(ctx2, {
+            type: 'doughnut',
+            data: distributionData,
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'right',
+                    }
+                }
+            }
+        });
     }
+    
+    // Event listeners
+    document.getElementById('apply-dates').addEventListener('click', function() {
+        const startDate = document.getElementById('start-date').value;
+        const endDate = document.getElementById('end-date').value;
+        loadData(startDate, endDate);
+    });
+    
+    document.getElementById('refresh-data').addEventListener('click', function() {
+        const startDate = document.getElementById('start-date').value;
+        const endDate = document.getElementById('end-date').value;
+        loadData(startDate, endDate);
+    });
+    
+    document.querySelectorAll('.time-period').forEach(btn => {
+        btn.addEventListener('click', function() {
+            document.querySelectorAll('.time-period').forEach(b => b.classList.remove('active'));
+            this.classList.add('active');
+            
+            const days = parseInt(this.dataset.days);
+            let startDate, endDate = new Date().toISOString().split('T')[0];
+            
+            if (days === 0) {
+                // This month
+                const date = new Date();
+                startDate = new Date(date.getFullYear(), date.getMonth(), 1).toISOString().split('T')[0];
+            } else {
+                // Last X days
+                const date = new Date();
+                date.setDate(date.getDate() - days);
+                startDate = date.toISOString().split('T')[0];
+            }
+            
+            document.getElementById('start-date')._flatpickr.setDate(startDate);
+            document.getElementById('end-date')._flatpickr.setDate(endDate);
+            loadData(startDate, endDate);
+        });
+    });
+    
+    // Initial load
+    document.addEventListener('DOMContentLoaded', function() {
+        loadData('{{ default_start }}', '{{ default_end }}');
+    });
 </script>
 {% endblock %}

@@ -1,25 +1,31 @@
-# Use an official Python image
 FROM python:3.11-slim
 
-# Environment configs
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
 
-# Set working directory
 WORKDIR /code
 
-# Install dependencies
-COPY requirements.txt /code/
-RUN pip install --upgrade pip && pip install -r requirements.txt
+# Install build tools and system dependencies
+RUN apt-get update && apt-get install -y \
+    build-essential \
+    gcc \
+    libpq-dev \
+    libffi-dev \
+    libssl-dev \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
 
-# Copy project
+COPY requirements.txt /code/
+
+RUN pip install --upgrade pip setuptools wheel && \
+    pip install -r requirements.txt
+
 COPY . /code/
 
-# Collect static files
 RUN python manage.py collectstatic --noinput
 
-# Run migrations, create superuser, start Gunicorn
 CMD sh -c "python manage.py migrate && \
            python manage.py createsuperuser --noinput || true && \
            python -c 'import os; import django; django.setup(); from django.contrib.auth import get_user_model; User = get_user_model(); user = User.objects.get(username=os.environ[\"DJANGO_SUPERUSER_USERNAME\"]); user.set_password(os.environ[\"DJANGO_SUPERUSER_PASSWORD\"]); user.save()' && \
-           python -c 'import gevent; print(gevent.__version__)' && gunicorn portfolio.wsgi:application --bind 0.0.0.0:$PORT --worker-class gthread --workers 2 --threads 4 --timeout 60"
+           python -c 'import gevent; print(gevent.__version__)' && \
+           gunicorn about.wsgi:application --bind 0.0.0.0:$PORT --worker-class gthread --workers 2 --threads 4 --timeout 60"

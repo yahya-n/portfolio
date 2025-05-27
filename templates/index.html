@@ -1,6 +1,6 @@
 {% extends 'base.html' %}
 
-{% block title %}Home - Portfolio{% endblock %}
+
 
 {% block content %}
 
@@ -767,6 +767,7 @@
       <div class="tabs-header">
         <button class="tab-btn active" data-tab="frontend">Frontend</button>
         <button class="tab-btn" data-tab="backend">Backend</button>
+        <button class="tab-btn" data-tab="database">Database</button>
         <button class="tab-btn" data-tab="tools">Tools</button>
         <button class="tab-btn" data-tab="softskill">Soft Skill</button>
         <div class="tab-indicator"></div>
@@ -814,7 +815,26 @@
             {% endfor %}
           </div>
         </div>
-        
+        <!-- Database Skills -->
+        <div class="tab-pane" id="database">
+          <div class="skills-grid">
+            {% for skill in database_skills %}
+            <div class="skill-card" data-gsap="zoom-in">
+              <div class="radial-progress" data-progress="{{ skill.level }}">
+          <div class="radial-inner">
+            <i class="{{ skill.icon }}"></i>
+          </div>
+          <svg class="radial-svg" viewBox="0 0 100 100">
+            <circle class="radial-bg" cx="50" cy="50" r="45"></circle>
+            <circle class="radial-fill" cx="50" cy="50" r="45"></circle>
+          </svg>
+              </div>
+              <h5 class="skill-name">{{ skill.name }}</h5>
+              <div class="skill-level">{{ skill.level }}%</div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
         <!-- Tools Skills -->
         <div class="tab-pane" id="tools">
           <div class="skills-grid">
@@ -1181,7 +1201,7 @@
             <a href="{{ profile.linkedin_link }}" data-track-event="linkedin" class="social-circle linkedin" target="_blank">
               <i class="fab fa-linkedin-in"></i>
             </a>
-            <a href="{{ profile.twitter_link }}" class="social-circle twitter" target="_blank">
+            <a href="{{ profile.twitter_link }}" data-track-event="twitter" class="social-circle twitter" target="_blank">
               <i class="fab fa-twitter"></i>
             </a>
           </div>
@@ -1215,7 +1235,7 @@
             <div class="input-highlight"></div>
           </div>
           
-          <button type="submit" class="btn btn-primary btn-lg w-100 py-3 rounded-pill hover-3d">
+          <button type="submit" class="btn btn-primary btn-lg w-100 py-3 rounded-pill hover-3d" >
             <span class="d-flex align-items-center justify-content-center">
               <i class="fas fa-paper-plane me-3"></i> Send Message
             </span>
@@ -3110,72 +3130,85 @@
 <!-- Replace the existing JavaScript section in your index.html with this: -->
 <script>
   document.addEventListener('DOMContentLoaded', function() {
-      console.log('Tracking script loaded'); // Debug line
-      
-      // Function to get CSRF token
-      function getCookie(name) {
-          let cookieValue = null;
-          if (document.cookie && document.cookie !== '') {
-              const cookies = document.cookie.split(';');
-              for (let i = 0; i < cookies.length; i++) {
-                  const cookie = cookies[i].trim();
-                  if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                      cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                      break;
-                  }
-              }
-          }
-          return cookieValue;
-      }
-  
-      // Function to send tracking data
-      function trackEvent(eventType) {
-          console.log('Tracking event:', eventType); // Debug line
-          
-          fetch('/track-event/', {
-              method: 'POST',
-              headers: {
-                  'Content-Type': 'application/json',
-                  'X-CSRFToken': getCookie('csrftoken'),
-              },
-              body: JSON.stringify({
-                  'event_type': eventType
-              })
-          })
-          .then(response => response.json())
-          .then(data => {
-              console.log('Tracking response:', data); // Debug line
-          })
-          .catch(error => {
-              console.error('Tracking error:', error);
-          });
-      }
-  
-      // Track all elements with data-track-event attribute
-      document.querySelectorAll('[data-track-event]').forEach(element => {
-          element.addEventListener('click', function(e) {
-              const eventType = this.getAttribute('data-track-event');
-              console.log('Element clicked:', eventType); // Debug line
-              
-              // Track the event
-              trackEvent(eventType);
-              
-              // For external links, allow them to open normally
-              // For downloads, allow them to download normally
-              // Don't prevent default behavior
-          });
-      });
-  
-      // Special handling for contact form submission
-      const contactForm = document.getElementById('contact-form');
-      if (contactForm) {
-          contactForm.addEventListener('submit', function(e) {
-              console.log('Contact form submitted'); // Debug line
-              trackEvent('contact_form_submission');
-              // Don't prevent default - let form submit normally
-          });
-      }
-  });
+    console.log('Tracking script loaded'); // Debug line
+    
+    // Function to get CSRF token
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // Function to send tracking data
+    function trackEvent(eventType) {
+        console.log('Tracking event:', eventType); // Debug line
+        
+        fetch('/track-event/', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRFToken': getCookie('csrftoken'),
+            },
+            body: JSON.stringify({
+                'event_type': eventType
+            })
+        })
+        .then(response => response.json())
+        .then(data => {
+            console.log('Tracking response:', data); // Debug line
+        })
+        .catch(error => {
+            console.error('Tracking error:', error);
+        });
+    }
+
+    // Track all elements with data-track-event attribute
+    document.querySelectorAll('[data-track-event]').forEach(element => {
+        element.addEventListener('click', function(e) {
+            const eventType = this.getAttribute('data-track-event');
+            console.log('Element clicked:', eventType); // Debug line
+            
+            // Track the event
+            trackEvent(eventType);
+            
+            // For external links, allow them to open normally
+            // For downloads, allow them to download normally
+            // Don't prevent default behavior
+        });
+    });
+
+    // Special handling for contact form submission - FIXED ID
+    const contactForm = document.getElementById('contactForm'); // Changed from 'contact-form' to 'contactForm'
+    if (contactForm) {
+        contactForm.addEventListener('submit', function(e) {
+            console.log('Contact form submitted'); // Debug line
+            trackEvent('contact_form_submission');
+            // Don't prevent default - let form submit normally
+        });
+    }
+
+    // Alternative: Also track the submit button click as backup
+    const submitButton = document.querySelector('button[data-track-event="message_send"]');
+    if (submitButton) {
+        submitButton.addEventListener('click', function(e) {
+            console.log('Submit button clicked'); // Debug line
+            // The trackEvent for 'message_send' will be called by the general click handler above
+            // But we can also ensure form submission is tracked here
+            setTimeout(() => {
+                trackEvent('contact_form_submission');
+            }, 100); // Small delay to ensure the click event fires first
+        });
+    }
+});
   </script>
 
 

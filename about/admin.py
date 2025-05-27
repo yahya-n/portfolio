@@ -43,6 +43,92 @@ from django.utils.timezone import now, timedelta
 from django.db.models import Count, Q
 from django.db.models.functions import TruncDay, TruncMonth, TruncYear
 from datetime import datetime
+from django.utils.html import format_html
+from django.contrib.auth.admin import UserAdmin as DefaultUserAdmin
+from django.contrib.auth import get_user_model
+from django.utils.safestring import mark_safe
+from django import forms
+
+User = get_user_model()
+
+# Helper to get profile image from Profile model
+def get_profile_image(user):
+    try:
+        profile = Profile.objects.get(user=user)
+        if profile.image:
+            return profile.image.url
+    except Profile.DoesNotExist:
+        return None
+    return None
+
+# Override User display in admin to show profile image next to username
+
+def user_with_profile_photo(obj):
+    img_url = get_profile_image(obj)
+    if img_url:
+        return mark_safe(f'<img src="{img_url}" width="32" height="32" style="border-radius:50%;vertical-align:middle;margin-right:8px;" /> {obj.username}')
+    return obj.username
+user_with_profile_photo.short_description = 'User'
+
+# Patch UserAdmin list_display and other places to use user_with_profile_photo
+class CustomUserChangeForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = '__all__'
+
+    profile_image = forms.ImageField(required=False)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        if hasattr(self.instance, 'profile_image'):
+            self.fields['profile_image'].initial = self.instance.profile_image
+
+    def save(self, commit=True):
+        user = super().save(commit=False)
+        if self.cleaned_data.get('profile_image'):
+            user.profile_image = self.cleaned_data['profile_image']
+        if commit:
+            user.save()
+        return user
+
+class CustomUserAdmin(DefaultUserAdmin):
+    form = CustomUserChangeForm
+    fieldsets = DefaultUserAdmin.fieldsets
+    add_fieldsets = DefaultUserAdmin.add_fieldsets
+
+    def user_with_photo(self, obj):
+        return user_with_profile_photo(obj)
+    user_with_photo.short_description = 'User'
+
+    list_display = tuple(
+        'user_with_photo' if f == 'username' else f
+        for f in DefaultUserAdmin.list_display
+    )
+
+    # Optionally, override other methods to use user_with_profile_photo wherever user is displayed
+
+admin.site.unregister(User)
+admin.site.register(User, CustomUserAdmin)
+
+class CustomUserAdmin(DefaultUserAdmin):
+    form = CustomUserChangeForm
+    fieldsets = DefaultUserAdmin.fieldsets + (
+        ('Profile', {'fields': ('profile_image',)}),
+    )
+    add_fieldsets = DefaultUserAdmin.add_fieldsets + (
+        ('Profile', {'fields': ('profile_image',)}),
+    )
+
+    def profile_photo(self, obj):
+        if hasattr(obj, 'profile_image') and obj.profile_image:
+            return mark_safe(f'<img src="{obj.profile_image.url}" width="40" height="40" style="border-radius:50%;" />')
+        return "-"
+    profile_photo.short_description = 'Profile Photo'
+
+    list_display = DefaultUserAdmin.list_display + ('profile_photo',)
+
+admin.site.unregister(User)
+admin.site.register(User, CustomUserAdmin)
 
 class MetricsAdmin(admin.ModelAdmin):
     change_list_template = "admin/about/metrics_dashboard.html"

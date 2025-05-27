@@ -115,6 +115,8 @@ class Profile(models.Model):
     github_link = models.URLField(max_length=200, blank=True, null=True)
     linkedin_link = models.URLField(max_length=200, blank=True, null=True)
     twitter_link = models.URLField(max_length=200, blank=True, null=True)
+    favicon_icon = models.ImageField(upload_to='uploads/', blank=True, null=True)
+    title_name = models.CharField(max_length=100, default='My Portfolio')
 
     def __str__(self):
         return self.name
@@ -154,6 +156,7 @@ class Skill(models.Model):
         ('Backend', 'Backend'),
         ('Softskills', 'Softskills'),
         ('Tools', 'Tools'),
+        ('Database', 'Database'),
     ]
 
     name = models.CharField(max_length=100)

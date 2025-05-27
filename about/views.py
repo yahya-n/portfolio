@@ -102,12 +102,14 @@ def about_view(request):
     skills = Skill.objects.all()
     frontend_skills = skills.filter(type='Frontend')
     backend_skills = skills.filter(type='Backend')
+    database_skills = skills.filter(type='Database')
     tools_skills = skills.filter(type='Tools')
     soft_skills = skills.filter(type='Softskills')
     about_quote = profile.about_quote if profile else None
     location = profile.location if profile else None
     typewriter = profile.typewriter if profile else None
     projects = Project.objects.all()
+    title_name = profile.title_name if profile else 'My Portfolio'
 
     return render(request, 'index.html', {
         'profile': profile,
@@ -115,12 +117,14 @@ def about_view(request):
         'education': education,
         'frontend_skills': frontend_skills,
         'backend_skills': backend_skills,
+        'database_skills': database_skills,
         'tools_skills': tools_skills,
         'soft_skills': soft_skills,
         'about_quote': about_quote,
         'location': location,
         'typewriter': typewriter,
         'projects': projects,
+        'title_name': title_name,
     })
 
 @login_required
@@ -144,4 +148,4 @@ def dashboard_view(request):
         count = Metrics.objects.filter(event_type=event_type).count()
         print(f"{event_type}: {count}")
     
-    return render(request, 'dashboard.html', {'stats': stats})
+    return render(request, 'metrics_dashboard.html', {'stats': stats})

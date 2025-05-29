@@ -81,16 +81,10 @@ ASGI_APPLICATION = 'portfolio.asgi.application'
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_AGE = 86400  # 24 hours in seconds
 
-
 DATABASES = {
-    'default': dj_database_url.parse(
-        os.environ.get('DATABASE_URL'),
-        conn_max_age=600,  # keeps connections open and reused
-        ssl_require=True   # for platforms like Heroku or Supabase
-    )
+    'default': dj_database_url.parse(os.environ.get("DATABASE_URL"))
 }
-
-
+print("DATABASE_URL:", os.environ.get("DATABASE_URL"))
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
     {

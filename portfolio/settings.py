@@ -35,6 +35,8 @@ ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
 # Application definition
 INSTALLED_APPS = [
     #'admin_soft.apps.AdminSoftDashboardConfig',
+    'cloudinary',
+    'cloudinary_storage',
     'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -109,6 +111,14 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+CLOUDINARY_STORAGE = {
+    'CLOUD_NAME': os.getenv('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.getenv('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.getenv('CLOUDINARY_API_SECRET'),
+}
+DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
 
 # Internationalization
 LANGUAGE_CODE = 'en-us'

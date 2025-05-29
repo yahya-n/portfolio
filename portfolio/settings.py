@@ -18,7 +18,6 @@ import os
 from dotenv import load_dotenv
 import dj_database_url
 from decouple import config
-import django
 
 load_dotenv()
 
@@ -30,7 +29,6 @@ SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-django.setup()
 
 ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
 

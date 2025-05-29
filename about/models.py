@@ -1,16 +1,9 @@
 from django.db import models
 from django.utils.timezone import now
-
-from django.db import models
-from django.utils.timezone import now
-
-from django.db import models
-from django.utils.timezone import now
 from datetime import timedelta
-
-from django.utils.timezone import now
 from django.db.models import Count
-from django.db.models.functions import TruncMonth , TruncDay, TruncYear
+from django.db.models.functions import TruncMonth, TruncDay, TruncYear
+
 
 class Metrics(models.Model):
     EVENT_TYPES = [
@@ -30,13 +23,20 @@ class Metrics(models.Model):
     user_agent = models.CharField(max_length=255, blank=True, null=True)
     path = models.CharField(max_length=255, blank=True, null=True)
     referrer = models.CharField(max_length=512, blank=True, null=True)
-
+    month = models.IntegerField(null=True, blank=True)
+    year = models.IntegerField(null=True, blank=True)
 
     class Meta:
         verbose_name_plural = "Metrics"
         ordering = ['-timestamp']
 
-    
+    def save(self, *args, **kwargs):
+        """Override save to automatically set month and year from timestamp"""
+        if self.timestamp:
+            self.month = self.timestamp.month
+            self.year = self.timestamp.year
+        super().save(*args, **kwargs)
+
     @classmethod
     def get_current_month(cls):
         """Get metrics for current month grouped by day"""
@@ -101,6 +101,7 @@ class Metrics(models.Model):
     def __str__(self):
         return f"{self.get_event_type_display()} at {self.timestamp}"
 
+
 class Profile(models.Model):
     name = models.CharField(max_length=100)
     occupation = models.CharField(max_length=100)
@@ -121,6 +122,7 @@ class Profile(models.Model):
     def __str__(self):
         return self.name
 
+
 class Experience(models.Model):
     company = models.CharField(max_length=100)
     role = models.CharField(max_length=100)
@@ -130,6 +132,7 @@ class Experience(models.Model):
     def __str__(self):
         return f"{self.role} at {self.company}"
 
+
 class Education(models.Model):
     institution = models.CharField(max_length=100)
     degree = models.CharField(max_length=100)
@@ -137,19 +140,8 @@ class Education(models.Model):
 
     def __str__(self):
         return f"{self.degree} from {self.institution}"
-'''
-class Skill(models.Model):
-    SKILL_TYPE_CHOICES = [
-        ('FE', 'Frontend'),
-        ('BE', 'Backend'),
-    ]
-    name = models.CharField(max_length=50)
-    type = models.CharField(choices=SKILL_TYPE_CHOICES, max_length=2)
-    level = models.CharField(max_length=100)
 
-    def __str__(self):
-        return f"{self.name} ({self.get_type_display()})"
-'''
+
 class Skill(models.Model):
     SKILL_TYPES = [
         ('Frontend', 'Frontend'),
@@ -178,7 +170,3 @@ class Project(models.Model):
 
     def __str__(self):
         return self.title
-
-
-
-

@@ -16,6 +16,7 @@ Django settings for portfolio project.
 from pathlib import Path
 import os
 from dotenv import load_dotenv
+import dj_database_url
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -25,7 +26,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG', 'False').lower() in ('true', '1', 'yes')
+DEBUG = True
 
 ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
 
@@ -79,13 +80,15 @@ ASGI_APPLICATION = 'portfolio.asgi.application'
 SESSION_ENGINE = 'django.contrib.sessions.backends.db'
 SESSION_COOKIE_AGE = 86400  # 24 hours in seconds
 
-# Database
+
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
+    'default': dj_database_url.parse(
+        os.environ.get('DATABASE_URL'),
+        conn_max_age=600,  # keeps connections open and reused
+        ssl_require=True   # for platforms like Heroku or Supabase
+    )
 }
+
 
 # Password validation
 AUTH_PASSWORD_VALIDATORS = [
@@ -106,7 +109,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Asis/Kolkata'
+TIME_ZONE = 'UTC'
 
 USE_I18N = True
 

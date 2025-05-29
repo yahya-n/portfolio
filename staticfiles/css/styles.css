@@ -1,0 +1,195 @@
+:root {
+  --primary-color: #1F3B73; /* Deep navy blue */
+  --secondary-color: #E6F1FA; /* Soft light blue */
+  --accent-color: #2A74A3; /* Rich blue for highlights */
+  --heading-color: #0D223B; /* Dark blue for contrast */
+  --footer-color: #162A47; /* Slightly darker navy for grounding */
+}
+
+  
+  body {
+    background-color: var(--primary-color);
+    color: var(--accent-color);
+    font-family: Arial, sans-serif;
+  }
+  h1, h2, h3, h4, h5, h6 { 
+    color: var(--heading-color); /* Apply black color to all headings */ 
+}
+  
+  header {
+    background-color: var(--header-color);
+    padding: 20px;
+    text-align: center;
+  }
+  
+  nav {
+    background-color: var(--accent-color);
+    padding: 10px;
+  }
+  
+  nav a {
+    color: var(--primary-color);
+    text-decoration: none;
+    padding: 10px;
+  }
+  
+  main {
+    padding: 20px;
+  }
+  
+  footer {
+    background-color: var(--footer-color);
+    padding: 10px;
+    text-align: center;
+  }
+  .star-container {
+    position: relative;
+    display: inline-block;
+    width: 100px; /* Adjust the width as needed */
+    height: 20px; /* Adjust the height as needed */
+    background-color: #ccc; /* Base color for the star */
+  }
+  
+  .star-base {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #ccc; /* Base color for the star */
+  }
+  
+  .star-fill {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    background-color: #FFD700; /* Yellow color for the filled part */
+    overflow: hidden;
+  }
+  
+  .timeline {
+    position: relative;
+    margin-top: 20px;
+    padding-left: 30px;
+    border-left: 3px solid #ffc107; /* Golden timeline line */
+}
+
+.timeline-item {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+}
+
+.timeline-marker {
+    position: absolute;
+    left: -15px;
+    width: 20px;
+    height: 20px;
+    background-color: #ffc107;
+    border-radius: 50%;
+    border: 3px solid #fff;
+}
+
+.timeline-content {
+    background-color: #f8f9fa;
+    border-left: 5px solid #ffc107;
+    padding: 15px;
+    border-radius: 8px;
+}
+.btn-social {
+    width: 50px; /* Diameter of the button */
+    height: 50px;
+    border-radius: 50%; /* Makes the button round */
+    display: inline-flex;
+    font-size: 1.5rem;
+    padding: 0;
+    text-align: center;
+}
+
+.btn-social i {
+    margin: 0; /* Center the logo perfectly */
+}
+
+.btn-dark {
+    background-color: #333;
+    color: #fff;
+}
+
+.btn-dark:hover {
+    background-color: #555;
+    color: #fff;
+}
+
+.btn-primary {
+    background-color: #0077b5;
+    color: #fff;
+}
+
+.btn-primary:hover {
+    background-color: #005582;
+    color: #fff;
+}
+/* Timeline container */
+.timeline {
+    position: relative;
+    margin-top: 20px;
+    padding-left: 30px;
+    border-left: 3px solid #ddd; /* Base line for timeline */
+}
+
+/* Timeline item */
+.timeline-item {
+    position: relative;
+    display: flex;
+    align-items: flex-start;
+}
+
+/* Timeline marker */
+.timeline-marker {
+    position: absolute;
+    left: -15px;
+    width: 20px;
+    height: 20px;
+    background-color: #ffc107; /* Default marker color */
+    border-radius: 50%;
+    border: 3px solid #fff;
+}
+
+/* Timeline content */
+.timeline-content {
+    background-color: #f8f9fa;
+    border-left: 5px solid #ffc107; /* Default left border */
+    padding: 15px;
+    border-radius: 8px;
+    transition: all 0.3s ease;
+}
+
+/* Hover effect for timeline content */
+.timeline-content:hover {
+    background-color: #fff;
+    border-left-color: #007bff; /* Change left border on hover */
+    transform: translateY(-5px);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* Colors for different sections */
+.timeline-marker.bg-warning {
+    background-color: #ffc107; /* Yellow for education */
+}
+
+.timeline-marker.bg-primary {
+    background-color: #007bff; /* Blue for experience */
+}
+/* Remove default padding/margin for full-width display */
+#skills {
+    margin: 0;
+    padding: 0;
+}
+
+/* Add spacing between rows for better layout */
+#skills .row {
+    margin: 0;
+    padding: 10px 0;
+}
+

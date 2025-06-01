@@ -46,6 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.humanize',  # For formatting numbers and dates
     'about',
+    'cloudinary_storage',  # Cloudinary storage backend
+    'cloudinary',  # Cloudinary app for media management
 ]
 
 MIDDLEWARE = [

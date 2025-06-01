@@ -35,8 +35,6 @@ ALLOWED_HOSTS = [os.environ.get('ALLOWED_HOSTS')]
 # Application definition
 INSTALLED_APPS = [
     #'admin_soft.apps.AdminSoftDashboardConfig',
-    'cloudinary',
-    'cloudinary_storage',
     'jazzmin',
     'django.contrib.admin',
     'django.contrib.auth',

@@ -748,16 +748,52 @@
     </div>
     
     <div class="skills-tabs">
-      <div class="tabs-header" style="overflow-x: auto; overflow-y: hidden; white-space: nowrap; scrollbar-width: none; -ms-overflow-style: none;">
-        <button class="tab-btn active" data-tab="frontend" style="display: inline-block;">Language</button>
-        <button class="tab-btn" data-tab="backend" style="display: inline-block;">Framework</button>
-        <button class="tab-btn" data-tab="database" style="display: inline-block;">Database</button>
-        <button class="tab-btn" data-tab="tools" style="display: inline-block;">Tools</button>
-        <button class="tab-btn" data-tab="softskill" style="display: inline-block;">Soft Skill</button>
-        <div class="tab-indicator"></div>
+      <div class="tabs-header-outer" style="overflow-x: auto; overflow-y: hidden; white-space: nowrap; scrollbar-width: none; -ms-overflow-style: none; width: 100%;">
+        <div class="tabs-header" style="display: inline-flex; min-width: max-content; position: relative;">
+            <div class="w-100 d-flex justify-content-center align-items-center" style="text-align:center;">
+              <div class="d-flex justify-content-center align-items-center w-100 gap-2 flex-wrap flex-md-nowrap">
+                <button class="tab-btn active" data-tab="frontend" style="display: inline-block;">Language</button>
+                <button class="tab-btn" data-tab="backend" style="display: inline-block;">Framework</button>
+                <button class="tab-btn" data-tab="database" style="display: inline-block;">Database</button>
+                <button class="tab-btn" data-tab="tools" style="display: inline-block;">Tools</button>
+                <button class="tab-btn" data-tab="softskill" style="display: inline-block;">Soft Skill</button>
+              </div>
+            </div>
+            <style>
+              @media (min-width: 768px) {
+                .tabs-header {
+                  justify-content: center !important;
+                  display: flex !important;
+                  width: 100%;
+                }
+                .tabs-header > div {
+                  width: 100%;
+                  justify-content: center !important;
+                  display: flex !important;
+                }
+              }
+            </style>
+          <div class="tab-indicator"></div>
+        </div>
       </div>
       <style>
-        .tabs-header::-webkit-scrollbar { display: none; }
+        .tabs-header-outer::-webkit-scrollbar { display: none; }
+        .tabs-header-outer {
+          overflow-x: auto;
+          overflow-y: hidden;
+          white-space: nowrap;
+          scrollbar-width: none;
+          -ms-overflow-style: none;
+          width: 100%;
+        }
+        .tabs-header {
+          display: inline-flex;
+          min-width: max-content;
+          position: relative;
+        }
+        .tab-btn {
+          flex: 0 0 auto;
+        }
       </style>
       <div class="tabs-content">
         <!-- Frontend Skills -->

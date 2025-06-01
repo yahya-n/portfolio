@@ -899,27 +899,67 @@
     </div>
     <div class="projects-horizontal-scroll-outer"></div>
       <div class="projects-horizontal-scroll" id="projectsHorizontalScroll">
-      {% for project in projects %}
-      <div class="project-card-horizontal glassmorphism" data-category="{{ project.category.slug }}">
-        <div class="project-card-inner hover-3d" style="background: rgba(255,255,255,0.85); border: 2px solid #e0e7ff; box-shadow: 0 8px 32px 0 rgba(67,97,238,0.10); border-radius: 2rem;">
+        {% for project in projects %}
+        <div class="project-card-horizontal glassmorphism" data-category="{{ project.category.slug }}">
+          <div class="project-card-inner hover-3d" style="background: rgba(255,255,255,0.85); border: 2px solid #e0e7ff; box-shadow: 0 8px 32px 0 rgba(67,97,238,0.10); border-radius: 2rem;">
         <div class="project-image" style="overflow:visible;">
           <img src="{{ project.project_image.url }}" alt="{{ project.title }}" style="border-radius: 2rem 2rem 0 0; box-shadow: 0 4px 24px 0 rgba(67,97,238,0.10);">
           <div class="project-overlay" style="background: linear-gradient(180deg, rgba(67,97,238,0.0) 60%, rgba(67,97,238,0.12) 100%); border-radius: 2rem 2rem 0 0;">
-          <div class="project-tags">
-            {% for tag in project.tags.all %}
-            <span class="project-tag neon-tag" style="background: linear-gradient(90deg, #4895ef 60%, #4cc9f0 100%); color: #fff; font-weight:600; letter-spacing:0.5px;">
+            <div class="project-tags">
+          {% for tag in project.tags.all %}
+          <span class="project-tag neon-tag" style="background: linear-gradient(90deg, #4895ef 60%, #4cc9f0 100%); color: #fff; font-weight:600; letter-spacing:0.5px;">
             <i class="fas fa-hashtag"></i> {{ tag.name }}
-            </span>
-            {% endfor %}
-          </div>
+          </span>
+          {% endfor %}
+            </div>
           </div>
         </div>
         <div class="project-content" style="padding: 2rem 1.5rem 1.5rem 1.5rem;">
           <h3 class="project-title mb-2 wow-gradient-text" style="font-size:1.35rem; font-weight:800; letter-spacing:0.5px;">
-          <i class="fas fa-bolt text-warning me-2"></i>{{ project.title }}
+            <i class="fas fa-bolt text-warning me-2"></i>
+            {% if project.demo_link %}
+          <a href="{{ project.demo_link }}" class="text-decoration-none" target="_blank" style="color:inherit;">
+            {{ project.title }}
+            <i class="fas fa-external-link-alt ms-1" style="font-size:0.95em;"></i>
+          </a>
+            {% else %}
+          {{ project.title }}
+            {% endif %}
           </h3>
-          <p class="project-description mb-3" style="color:#495057; font-size:1.05rem;">{{ project.short_description }}</p>
-          <div class="project-links d-flex gap-3 flex-wrap">
+          <p class="project-short-description" style="color:#6c757d; font-size:0.98rem; margin-bottom:0.5rem;">
+            {{ project.short_description }}
+          </p>
+          <div class="project-description mb-3 scrollable-description" style="
+            color:#495057;
+            font-size:1.05rem;
+            background: rgba(240,245,255,0.7);
+            border-radius: 0.7rem;
+            padding: 1rem 1.2rem;
+            margin-bottom: 1.2rem;
+            line-height: 1.7;
+            word-break: break-word;
+            text-align: left;
+            box-shadow: 0 2px 8px 0 rgba(67,97,238,0.04);
+            transition: background 0.3s;
+            max-height: 7.5em;
+            overflow-y: auto;
+            position: relative;
+          ">
+            {{ project.description }}
+            <div class="d-flex gap-2 mt-3">
+          {% if project.github_link %}
+          <a href="{{ project.github_link }}" data-track-event="github" class="btn btn-sm btn-outline-dark rounded-pill px-3 py-2 d-flex align-items-center gap-2" target="_blank" style="font-weight:600;">
+            <i class="fab fa-github"></i> GitHub
+          </a>
+          {% endif %}
+          {% if project.demo_link %}
+          <a href="{{ project.demo_link }}" class="btn btn-sm btn-primary rounded-pill px-3 py-2 d-flex align-items-center gap-2 wow-demo-btn" target="_blank" style="font-weight:700; background: linear-gradient(90deg, #4895ef 60%, #3f37c9 100%); border:none; min-width:120px; justify-content:center;">
+            <i class="fas fa-external-link-alt"></i> <span style="white-space:nowrap;">Demo</span>
+          </a>
+          {% endif %}
+            </div>
+          </div>
+          <div class="project-links d-flex gap-3 flex-wrap"></div>
           {% if project.github_link %}
           <a href="{{ project.github_link }}" data-track-event="github" class="project-link btn btn-sm btn-outline-dark rounded-pill px-3 py-2 d-flex align-items-center gap-2" target="_blank" style="font-weight:600;">
             <i class="fab fa-github"></i> Code
@@ -930,13 +970,108 @@
             <i class="fas fa-external-link-alt"></i> <span style="white-space:nowrap;">Live Demo</span>
           </a>
           {% endif %}
+        </div>
           </div>
         </div>
+        {% endfor %}
         </div>
-      </div>
-      {% endfor %}
-      </div>
-    </div>
+        </div>
+        <style>
+        /* Responsive project description for mobile and desktop */
+        .project-description.scrollable-description {
+          max-height: 7.5em;
+          overflow-y: auto;
+          scrollbar-width: none; /* Firefox */
+          -ms-overflow-style: none; /* IE/Edge */
+          position: relative;
+        }
+        .project-description.scrollable-description::-webkit-scrollbar {
+          width: 0 !important;
+          height: 0 !important;
+          display: none !important; /* Chrome/Safari */
+          background: transparent !important;
+        }
+        /* Scroll indicator animation */
+        .scroll-indicator {
+          position: absolute;
+          bottom: 8px;
+          left: 50%;
+          transform: translateX(-50%);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          pointer-events: none;
+          z-index: 2;
+          opacity: 0.7;
+          animation: scroll-indicator-bounce 1.8s infinite;
+        }
+        .scroll-indicator .arrow {
+          width: 18px;
+          height: 18px;
+          border-left: 2px solid #4895ef;
+          border-bottom: 2px solid #4895ef;
+          transform: rotate(-45deg);
+          margin-top: 2px;
+          margin-bottom: 0;
+        }
+        .scroll-indicator span {
+          font-size: 0.85rem;
+          color: #4895ef;
+          margin-bottom: 2px;
+          font-weight: 600;
+          letter-spacing: 0.02em;
+          background: rgba(255,255,255,0.7);
+          border-radius: 0.5em;
+          padding: 0 0.5em;
+        }
+        @keyframes scroll-indicator-bounce {
+          0%, 100% { transform: translateX(-50%) translateY(0);}
+          50% { transform: translateX(-50%) translateY(8px);}
+        }
+        @media (max-width: 900px) {
+          .project-description.scrollable-description {
+        font-size: 1.1rem;
+        padding: 1.1rem 1rem;
+        background: rgba(240,245,255,0.85);
+        margin-bottom: 1.1rem;
+        max-height: 8.5em;
+          }
+        }
+        @media (max-width: 576px) {
+          .project-description.scrollable-description {
+        font-size: 1.15rem;
+        padding: 1.2rem 0.8rem;
+        background: rgba(240,245,255,0.95);
+        margin-bottom: 1.2rem;
+        border-radius: 0.9rem;
+        text-align: left;
+        line-height: 1.8;
+        max-height: 10em;
+          }
+        }
+        @media (max-width: 400px) {
+          .project-description.scrollable-description {
+        font-size: 1rem;
+        padding: 0.8rem 0.4rem;
+        border-radius: 0.6rem;
+        max-height: 8em;
+          }
+        }
+        </style>
+        <script>
+        // Add scroll indicator to all scrollable descriptions
+        document.addEventListener('DOMContentLoaded', function() {
+          document.querySelectorAll('.project-description.scrollable-description').forEach(function(desc) {
+        // Only add if not already present
+        if (!desc.querySelector('.scroll-indicator')) {
+          const indicator = document.createElement('div');
+          indicator.className = 'scroll-indicator';
+          indicator.innerHTML = '<span>Scroll</span><div class="arrow"></div>';
+          desc.appendChild(indicator);
+        }
+          });
+        });
+        </script>
     <!-- Move the View All Projects button below the projects list and above contact -->
     <div class="text-center mt-6" data-gsap="fade-up" style="margin-bottom:2.5rem; margin-top:0;">
       <a href="#projects" id="viewAllProjectsBtn" class="btn btn-gradient btn-lg px-5 py-3 rounded-pill hover-3d" style="background: linear-gradient(90deg, #4895ef 60%, #3f37c9 100%); color:#fff; font-weight:700; box-shadow: 0 4px 24px 0 rgba(67,97,238,0.10); border:none;">
@@ -2604,7 +2739,41 @@
   .project-description {
     color: var(--gray);
     margin-bottom: 15px;
-    font-size: 0.9rem;
+    font-size: 1.05rem;
+    line-height: 1.7;
+    word-break: break-word;
+    text-align: left;
+    padding: 0.5rem 0.2rem;
+    border-radius: 0.5rem;
+    background: rgba(240, 245, 255, 0.5);
+    box-shadow: 0 2px 8px 0 rgba(67,97,238,0.04);
+    transition: background 0.3s;
+  }
+  @media (max-width: 767.98px) {
+    .project-description {
+      font-size: 1.1rem;
+      padding: 0.7rem 0.5rem;
+      background: rgba(240, 245, 255, 0.85);
+      margin-bottom: 1.1rem;
+    }
+  }
+  @media (max-width: 576px) {
+    .project-description {
+      font-size: 1.15rem;
+      padding: 0.9rem 0.7rem;
+      background: rgba(240, 245, 255, 0.95);
+      margin-bottom: 1.2rem;
+      border-radius: 0.7rem;
+      text-align: left;
+      line-height: 1.8;
+    }
+  }
+  @media (max-width: 400px) {
+    .project-description {
+      font-size: 1rem;
+      padding: 0.7rem 0.3rem;
+      border-radius: 0.5rem;
+    }
   }
   
   .project-links {

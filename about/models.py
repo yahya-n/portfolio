@@ -3,6 +3,9 @@ from django.utils.timezone import now
 from datetime import timedelta
 from django.db.models import Count
 from django.db.models.functions import TruncMonth, TruncDay, TruncYear
+from cloudinary_storage.storage import MediaCloudinaryStorage
+from cloudinary_storage.storage import RawMediaCloudinaryStorage
+
 
 
 class Metrics(models.Model):
@@ -110,13 +113,13 @@ class Profile(models.Model):
     recipient_email = models.EmailField(default='admin@example.com')  # Admin email for receiving messages
     about_me = models.TextField()
     location = models.CharField(max_length=100, blank=True, null=True)
-    profile_photo = models.ImageField(upload_to='uploads/')
-    cv = models.FileField(upload_to='uploads/')
+    profile_photo = models.ImageField(upload_to='uploads/',storage=MediaCloudinaryStorage())
+    cv = models.FileField(upload_to='uploads/',storage=RawMediaCloudinaryStorage())
     about_quote = models.CharField(max_length=255)
     github_link = models.URLField(max_length=200, blank=True, null=True)
     linkedin_link = models.URLField(max_length=200, blank=True, null=True)
     twitter_link = models.URLField(max_length=200, blank=True, null=True)
-    favicon_icon = models.ImageField(upload_to='uploads/', blank=True, null=True)
+    favicon_icon = models.ImageField(upload_to='uploads/',storage=MediaCloudinaryStorage(), blank=True, null=True)
     title_name = models.CharField(max_length=100, default='My Portfolio')
 
     def __str__(self):
@@ -165,7 +168,7 @@ class Project(models.Model):
     description = models.TextField()
     github_link = models.URLField()
     demo_link = models.URLField()
-    project_image = models.ImageField(upload_to='uploads/projects/', blank=True, null=True)
+    project_image = models.ImageField(upload_to='uploads/projects/',storage=MediaCloudinaryStorage(), blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):

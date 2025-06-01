@@ -96,7 +96,7 @@ DATABASES = {
         'PORT': os.environ.get('DB_PORT'),
     }
 }
-print("Database configuration:", DATABASES)
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {

@@ -147,8 +147,8 @@ class Education(models.Model):
 
 class Skill(models.Model):
     SKILL_TYPES = [
-        ('Frontend', 'Frontend'),
-        ('Backend', 'Backend'),
+        ('Language', 'Language'),
+        ('Framework', 'Framework'),
         ('Softskills', 'Softskills'),
         ('Tools', 'Tools'),
         ('Database', 'Database'),

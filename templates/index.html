@@ -765,8 +765,8 @@
     
     <div class="skills-tabs">
       <div class="tabs-header">
-        <button class="tab-btn active" data-tab="frontend">Frontend</button>
-        <button class="tab-btn" data-tab="backend">Backend</button>
+        <button class="tab-btn active" data-tab="frontend">Language</button>
+        <button class="tab-btn" data-tab="backend">Framework</button>
         <button class="tab-btn" data-tab="database">Database</button>
         <button class="tab-btn" data-tab="tools">Tools</button>
         <button class="tab-btn" data-tab="softskill">Soft Skill</button>
@@ -777,7 +777,7 @@
         <!-- Frontend Skills -->
         <div class="tab-pane active" id="frontend">
           <div class="skills-grid">
-            {% for skill in frontend_skills %}
+            {% for skill in language_skills %}
             <div class="skill-card" data-gsap="zoom-in">
               <div class="radial-progress" data-progress="{{ skill.level }}">
                 <div class="radial-inner">
@@ -798,7 +798,7 @@
         <!-- Backend Skills -->
         <div class="tab-pane" id="backend">
           <div class="skills-grid">
-            {% for skill in backend_skills %}
+            {% for skill in framework_skills %}
             <div class="skill-card" data-gsap="zoom-in">
               <div class="radial-progress" data-progress="{{ skill.level }}">
                 <div class="radial-inner">

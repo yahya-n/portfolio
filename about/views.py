@@ -100,8 +100,8 @@ def about_view(request):
     experience = Experience.objects.all()
     education = Education.objects.all()
     skills = Skill.objects.all()
-    frontend_skills = skills.filter(type='Frontend')
-    backend_skills = skills.filter(type='Backend')
+    language_skills = skills.filter(type='Language')
+    framework_skills = skills.filter(type='Framework')
     database_skills = skills.filter(type='Database')
     tools_skills = skills.filter(type='Tools')
     soft_skills = skills.filter(type='Softskills')
@@ -115,8 +115,8 @@ def about_view(request):
         'profile': profile,
         'experience': experience,
         'education': education,
-        'frontend_skills': frontend_skills,
-        'backend_skills': backend_skills,
+        'language_skills': language_skills,
+        'framework_skills': framework_skills,
         'database_skills': database_skills,
         'tools_skills': tools_skills,
         'soft_skills': soft_skills,

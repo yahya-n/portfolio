@@ -15,7 +15,7 @@ class Metrics(models.Model):
         ('send_message', 'Message Sent'),
     ]
     
-    event_type = models.CharField(max_length=20, choices=EVENT_TYPES)
+    event_type = models.CharField(max_length=500, choices=EVENT_TYPES)
     timestamp = models.DateTimeField(default=now)
     count = models.IntegerField(default=1)
     session_key = models.CharField(max_length=40, blank=True, null=True)

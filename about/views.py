@@ -149,3 +149,4 @@ def dashboard_view(request):
         print(f"{event_type}: {count}")
     
     return render(request, 'metrics_dashboard.html', {'stats': stats})
+

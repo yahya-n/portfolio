@@ -49,6 +49,7 @@ from django.contrib.auth import get_user_model
 from django.utils.safestring import mark_safe
 from django import forms
 
+
 User = get_user_model()
 
 # Helper to get profile image from Profile model
@@ -368,3 +369,5 @@ class ExperienceAdmin(admin.ModelAdmin):
 @admin.register(Education)
 class EducationAdmin(admin.ModelAdmin):
     list_display = ('institution', 'degree', 'year')
+
+

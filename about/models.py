@@ -121,6 +121,8 @@ class Profile(models.Model):
     twitter_link = models.URLField(max_length=200, blank=True, null=True)
     favicon_icon = models.ImageField(upload_to='uploads/',storage=MediaCloudinaryStorage(), blank=True, null=True)
     title_name = models.CharField(max_length=100, default='My Portfolio')
+    og_image = models.ImageField(upload_to='uploads/og/', storage=MediaCloudinaryStorage(), blank=True, null=True)
+    og_name = models.CharField(max_length=255, blank=True, null=True)
 
     def __str__(self):
         return self.name

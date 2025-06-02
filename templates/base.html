@@ -7,6 +7,8 @@
     <title>{{ profile.title_name }}</title>
     {% if profile.favicon_icon %}
     <link rel="icon" type="image/png" href="{{ profile.favicon_icon.url }}">
+    <meta property="og:image" content="{{ profile.og_image.url }}">
+    <meta property="og:title" content="{{ profile.og_name }}">
     <!-- 
         Note: Favicons cannot be styled with CSS. 
         To display a circular favicon, upload a circular PNG image with a transparent background.

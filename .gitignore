@@ -2,3 +2,5 @@
 .vscode/
 backup.json
 db.sqlite3
+env
+gitignore.txt

@@ -4,3 +4,18 @@ venv/
 db.sqlite3
 *.pyc
 .vscode/
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'yahya_portfolio_5yoa',
+        'USER': 'yahya_portfolio_user',
+        'PASSWORD': 'TwFPQ4r8oPnjQyWQaIKdMmt3k5QILwvL',
+        'HOST': 'dpg-d1ol883ipnbc73f69ppg-a.oregon-postgres.render.com',
+        'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'require'
+        }
+    }
+}
+
